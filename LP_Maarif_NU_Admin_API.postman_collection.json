@@ -1,0 +1,1967 @@
+{
+	"info": {
+		"_postman_id": "lpmaarif-admin-api-2024",
+		"name": "LP Ma'arif NU - Admin Panel API",
+		"description": "Complete API Collection for LP Ma'arif NU Admin Panel\n\nBase URL: http://localhost:8000/api/v1\n\n**Authentication:**\nAll protected endpoints require Bearer token in Authorization header.\n\n**Roles:**\n- super_admin: Full access\n- admin: Content management access\n- editor: News & Opinion only\n- viewer: Read-only access",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Authentication",
+			"item": [
+				{
+					"name": "Login",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"email\": \"admin@lpmaarifnu.or.id\",\n  \"password\": \"password\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/admin/auth/login",
+							"host": ["{{base_url}}"],
+							"path": ["admin", "auth", "login"]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Refresh Token",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"refresh_token\": \"{{refresh_token}}\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/admin/auth/refresh",
+							"host": ["{{base_url}}"],
+							"path": ["admin", "auth", "refresh"]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Current User",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/admin/auth/me",
+							"host": ["{{base_url}}"],
+							"path": ["admin", "auth", "me"]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Logout",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/admin/auth/logout",
+							"host": ["{{base_url}}"],
+							"path": ["admin", "auth", "logout"]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Change Password",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"old_password\": \"password\",\n  \"new_password\": \"newpassword123\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/admin/auth/change-password",
+							"host": ["{{base_url}}"],
+							"path": ["admin", "auth", "change-password"]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Forgot Password",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"email\": \"admin@lpmaarifnu.or.id\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/admin/auth/forgot-password",
+							"host": ["{{base_url}}"],
+							"path": ["admin", "auth", "forgot-password"]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Reset Password",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"token\": \"reset_token_here\",\n  \"new_password\": \"newpassword123\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/admin/auth/reset-password",
+							"host": ["{{base_url}}"],
+							"path": ["admin", "auth", "reset-password"]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "User Management",
+			"item": [
+				{
+					"name": "Get All Users",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/admin/users?page=1&limit=20&search=&role=",
+							"host": ["{{base_url}}"],
+							"path": ["admin", "users"],
+							"query": [
+								{"key": "page", "value": "1"},
+								{"key": "limit", "value": "20"},
+								{"key": "search", "value": ""},
+								{"key": "role", "value": ""}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get User By ID",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/admin/users/:id",
+							"host": ["{{base_url}}"],
+							"path": ["admin", "users", ":id"],
+							"variable": [
+								{
+									"key": "id",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create User",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"New Admin\",\n  \"email\": \"newadmin@lpmaarifnu.or.id\",\n  \"password\": \"password123\",\n  \"role\": \"admin\",\n  \"phone\": \"081234567890\",\n  \"avatar\": null\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/admin/users",
+							"host": ["{{base_url}}"],
+							"path": ["admin", "users"]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update User",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"Updated Name\",\n  \"email\": \"updated@lpmaarifnu.or.id\",\n  \"role\": \"editor\",\n  \"phone\": \"081234567890\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/admin/users/:id",
+							"host": ["{{base_url}}"],
+							"path": ["admin", "users", ":id"],
+							"variable": [
+								{
+									"key": "id",
+									"value": "2"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete User",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/admin/users/:id",
+							"host": ["{{base_url}}"],
+							"path": ["admin", "users", ":id"],
+							"variable": [
+								{
+									"key": "id",
+									"value": "2"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update User Status",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"status\": \"inactive\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/admin/users/:id/status",
+							"host": ["{{base_url}}"],
+							"path": ["admin", "users", ":id", "status"],
+							"variable": [
+								{
+									"key": "id",
+									"value": "2"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "News Articles",
+			"item": [
+				{
+					"name": "Get All News",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/admin/news?page=1&limit=20&search=&status=&category_id=&is_featured=",
+							"host": ["{{base_url}}"],
+							"path": ["admin", "news"],
+							"query": [
+								{"key": "page", "value": "1"},
+								{"key": "limit", "value": "20"},
+								{"key": "search", "value": ""},
+								{"key": "status", "value": ""},
+								{"key": "category_id", "value": ""},
+								{"key": "is_featured", "value": ""}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get News By ID",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/admin/news/:id",
+							"host": ["{{base_url}}"],
+							"path": ["admin", "news", ":id"],
+							"variable": [
+								{
+									"key": "id",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create News",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"title\": \"Berita Terbaru LP Ma'arif NU\",\n  \"excerpt\": \"Ringkasan berita singkat\",\n  \"content\": \"<p>Konten berita lengkap dengan HTML</p>\",\n  \"image\": \"https://cdn.lpmaarifnu.or.id/news/image.jpg\",\n  \"category_id\": 1,\n  \"status\": \"draft\",\n  \"published_at\": null,\n  \"is_featured\": false,\n  \"meta_title\": \"SEO Title\",\n  \"meta_description\": \"SEO Description\",\n  \"meta_keywords\": \"keyword1, keyword2\",\n  \"tag_ids\": [1, 2, 3]\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/admin/news",
+							"host": ["{{base_url}}"],
+							"path": ["admin", "news"]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update News",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"title\": \"Berita Updated\",\n  \"excerpt\": \"Excerpt updated\",\n  \"content\": \"<p>Content updated</p>\",\n  \"status\": \"published\",\n  \"is_featured\": true,\n  \"tag_ids\": [1, 2]\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/admin/news/:id",
+							"host": ["{{base_url}}"],
+							"path": ["admin", "news", ":id"],
+							"variable": [
+								{
+									"key": "id",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete News",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/admin/news/:id",
+							"host": ["{{base_url}}"],
+							"path": ["admin", "news", ":id"],
+							"variable": [
+								{
+									"key": "id",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Publish News",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/admin/news/:id/publish",
+							"host": ["{{base_url}}"],
+							"path": ["admin", "news", ":id", "publish"],
+							"variable": [
+								{
+									"key": "id",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Archive News",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/admin/news/:id/archive",
+							"host": ["{{base_url}}"],
+							"path": ["admin", "news", ":id", "archive"],
+							"variable": [
+								{
+									"key": "id",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Toggle Featured",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/admin/news/:id/toggle-featured",
+							"host": ["{{base_url}}"],
+							"path": ["admin", "news", ":id", "toggle-featured"],
+							"variable": [
+								{
+									"key": "id",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Opinion Articles",
+			"item": [
+				{
+					"name": "Get All Opinions",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/admin/opinions?page=1&limit=20&search=&status=",
+							"host": ["{{base_url}}"],
+							"path": ["admin", "opinions"],
+							"query": [
+								{"key": "page", "value": "1"},
+								{"key": "limit", "value": "20"},
+								{"key": "search", "value": ""},
+								{"key": "status", "value": ""}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Opinion By ID",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/admin/opinions/:id",
+							"host": ["{{base_url}}"],
+							"path": ["admin", "opinions", ":id"],
+							"variable": [
+								{
+									"key": "id",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Opinion",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"title\": \"Opini tentang Pendidikan\",\n  \"excerpt\": \"Ringkasan opini\",\n  \"content\": \"<p>Konten opini lengkap</p>\",\n  \"image\": \"https://cdn.lpmaarifnu.or.id/opinions/image.jpg\",\n  \"author_name\": \"Prof. Dr. Ahmad\",\n  \"author_title\": \"Pakar Pendidikan\",\n  \"author_image\": \"https://cdn.lpmaarifnu.or.id/profiles/author.jpg\",\n  \"author_bio\": \"Biografi penulis\",\n  \"status\": \"draft\",\n  \"is_featured\": false,\n  \"tag_ids\": [1, 2]\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/admin/opinions",
+							"host": ["{{base_url}}"],
+							"path": ["admin", "opinions"]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Opinion",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"title\": \"Opini Updated\",\n  \"status\": \"published\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/admin/opinions/:id",
+							"host": ["{{base_url}}"],
+							"path": ["admin", "opinions", ":id"],
+							"variable": [
+								{
+									"key": "id",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Opinion",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/admin/opinions/:id",
+							"host": ["{{base_url}}"],
+							"path": ["admin", "opinions", ":id"],
+							"variable": [
+								{
+									"key": "id",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Publish Opinion",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/admin/opinions/:id/publish",
+							"host": ["{{base_url}}"],
+							"path": ["admin", "opinions", ":id", "publish"],
+							"variable": [
+								{
+									"key": "id",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Documents",
+			"item": [
+				{
+					"name": "Get All Documents",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/admin/documents?page=1&limit=20&search=&file_type=&status=",
+							"host": ["{{base_url}}"],
+							"path": ["admin", "documents"],
+							"query": [
+								{"key": "page", "value": "1"},
+								{"key": "limit", "value": "20"},
+								{"key": "search", "value": ""},
+								{"key": "file_type", "value": ""},
+								{"key": "status", "value": ""}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Document By ID",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/admin/documents/:id",
+							"host": ["{{base_url}}"],
+							"path": ["admin", "documents", ":id"],
+							"variable": [
+								{
+									"key": "id",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Upload Document",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "file",
+									"type": "file",
+									"src": ""
+								},
+								{
+									"key": "title",
+									"value": "Dokumen Penting",
+									"type": "text"
+								},
+								{
+									"key": "description",
+									"value": "Deskripsi dokumen",
+									"type": "text"
+								},
+								{
+									"key": "category_id",
+									"value": "1",
+									"type": "text"
+								},
+								{
+									"key": "is_public",
+									"value": "true",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{base_url}}/admin/documents/upload",
+							"host": ["{{base_url}}"],
+							"path": ["admin", "documents", "upload"]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Document",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"title\": \"Dokumen Updated\",\n  \"description\": \"Description updated\",\n  \"is_public\": true,\n  \"status\": \"active\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/admin/documents/:id",
+							"host": ["{{base_url}}"],
+							"path": ["admin", "documents", ":id"],
+							"variable": [
+								{
+									"key": "id",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Replace Document File",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "file",
+									"type": "file",
+									"src": ""
+								}
+							]
+						},
+						"url": {
+							"raw": "{{base_url}}/admin/documents/:id/replace",
+							"host": ["{{base_url}}"],
+							"path": ["admin", "documents", ":id", "replace"],
+							"variable": [
+								{
+									"key": "id",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Document",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/admin/documents/:id",
+							"host": ["{{base_url}}"],
+							"path": ["admin", "documents", ":id"],
+							"variable": [
+								{
+									"key": "id",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Document Stats",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/admin/documents/stats",
+							"host": ["{{base_url}}"],
+							"path": ["admin", "documents", "stats"]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Hero Slides",
+			"item": [
+				{
+					"name": "Get All Hero Slides",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/admin/hero-slides",
+							"host": ["{{base_url}}"],
+							"path": ["admin", "hero-slides"]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Hero Slide By ID",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/admin/hero-slides/:id",
+							"host": ["{{base_url}}"],
+							"path": ["admin", "hero-slides", ":id"],
+							"variable": [
+								{
+									"key": "id",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Hero Slide",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"title\": \"Hero Slide Title\",\n  \"description\": \"Slide description\",\n  \"image\": \"https://cdn.lpmaarifnu.or.id/hero/slide.jpg\",\n  \"cta_label\": \"Learn More\",\n  \"cta_href\": \"/about\",\n  \"cta_secondary_label\": \"Contact\",\n  \"cta_secondary_href\": \"/contact\",\n  \"order_number\": 1,\n  \"is_active\": true,\n  \"start_date\": null,\n  \"end_date\": null\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/admin/hero-slides",
+							"host": ["{{base_url}}"],
+							"path": ["admin", "hero-slides"]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Hero Slide",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"title\": \"Updated Title\",\n  \"is_active\": false\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/admin/hero-slides/:id",
+							"host": ["{{base_url}}"],
+							"path": ["admin", "hero-slides", ":id"],
+							"variable": [
+								{
+									"key": "id",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Hero Slide",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/admin/hero-slides/:id",
+							"host": ["{{base_url}}"],
+							"path": ["admin", "hero-slides", ":id"],
+							"variable": [
+								{
+									"key": "id",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Reorder Hero Slides",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"orders\": [\n    {\"id\": 1, \"order_number\": 1},\n    {\"id\": 2, \"order_number\": 2},\n    {\"id\": 3, \"order_number\": 3}\n  ]\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/admin/hero-slides/reorder",
+							"host": ["{{base_url}}"],
+							"path": ["admin", "hero-slides", "reorder"]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Organization",
+			"item": [
+				{
+					"name": "Positions",
+					"item": [
+						{
+							"name": "Get All Positions",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{access_token}}"
+									}
+								],
+								"url": {
+									"raw": "{{base_url}}/admin/organization/positions",
+									"host": ["{{base_url}}"],
+									"path": ["admin", "organization", "positions"]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Create Position",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{access_token}}"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"position_name\": \"Ketua Umum\",\n  \"position_level\": 1,\n  \"position_type\": \"ketua\",\n  \"parent_id\": null,\n  \"order_number\": 1,\n  \"is_active\": true\n}"
+								},
+								"url": {
+									"raw": "{{base_url}}/admin/organization/positions",
+									"host": ["{{base_url}}"],
+									"path": ["admin", "organization", "positions"]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Board Members",
+					"item": [
+						{
+							"name": "Get All Board Members",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{access_token}}"
+									}
+								],
+								"url": {
+									"raw": "{{base_url}}/admin/organization/board-members",
+									"host": ["{{base_url}}"],
+									"path": ["admin", "organization", "board-members"]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Create Board Member",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{access_token}}"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"position_id\": 1,\n  \"name\": \"Prof. Dr. Ahmad\",\n  \"title\": \"Prof. Dr.\",\n  \"photo\": \"https://cdn.lpmaarifnu.or.id/profiles/ahmad.jpg\",\n  \"bio\": \"Biografi lengkap\",\n  \"email\": \"ahmad@lpmaarifnu.or.id\",\n  \"phone\": \"081234567890\",\n  \"social_media\": {\"facebook\": \"\", \"twitter\": \"\"},\n  \"period_start\": 2024,\n  \"period_end\": 2029,\n  \"is_active\": true,\n  \"order_number\": 1\n}"
+								},
+								"url": {
+									"raw": "{{base_url}}/admin/organization/board-members",
+									"host": ["{{base_url}}"],
+									"path": ["admin", "organization", "board-members"]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Pengurus",
+					"item": [
+						{
+							"name": "Get All Pengurus",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{access_token}}"
+									}
+								],
+								"url": {
+									"raw": "{{base_url}}/admin/organization/pengurus",
+									"host": ["{{base_url}}"],
+									"path": ["admin", "organization", "pengurus"]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Departments",
+					"item": [
+						{
+							"name": "Get All Departments",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{access_token}}"
+									}
+								],
+								"url": {
+									"raw": "{{base_url}}/admin/organization/departments",
+									"host": ["{{base_url}}"],
+									"path": ["admin", "organization", "departments"]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "Categories & Tags",
+			"item": [
+				{
+					"name": "Get All Categories",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/admin/categories?type=",
+							"host": ["{{base_url}}"],
+							"path": ["admin", "categories"],
+							"query": [
+								{"key": "type", "value": ""}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Category",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"Pendidikan\",\n  \"description\": \"Kategori Pendidikan\",\n  \"type\": \"news\",\n  \"icon\": \"book\",\n  \"color\": \"#1976D2\",\n  \"is_active\": true,\n  \"order_number\": 1\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/admin/categories",
+							"host": ["{{base_url}}"],
+							"path": ["admin", "categories"]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get All Tags",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/admin/tags",
+							"host": ["{{base_url}}"],
+							"path": ["admin", "tags"]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Tag",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"Beasiswa\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/admin/tags",
+							"host": ["{{base_url}}"],
+							"path": ["admin", "tags"]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Pages",
+			"item": [
+				{
+					"name": "Get All Pages",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/admin/pages",
+							"host": ["{{base_url}}"],
+							"path": ["admin", "pages"]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Page By ID",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/admin/pages/:id",
+							"host": ["{{base_url}}"],
+							"path": ["admin", "pages", ":id"],
+							"variable": [
+								{
+									"key": "id",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Page",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"slug\": \"visi-misi\",\n  \"title\": \"Visi & Misi\",\n  \"content\": \"<p>Content</p>\",\n  \"metadata\": {\"visi\": \"\", \"misi\": []},\n  \"template\": \"visi-misi\",\n  \"is_active\": true,\n  \"meta_title\": \"SEO Title\",\n  \"meta_description\": \"SEO Desc\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/admin/pages/:id",
+							"host": ["{{base_url}}"],
+							"path": ["admin", "pages", ":id"],
+							"variable": [
+								{
+									"key": "id",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Event Flyers",
+			"item": [
+				{
+					"name": "Get All Event Flyers",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/admin/event-flyers",
+							"host": ["{{base_url}}"],
+							"path": ["admin", "event-flyers"]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Event Flyer",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"title\": \"Seminar Pendidikan 2024\",\n  \"description\": \"Deskripsi event\",\n  \"image\": \"https://cdn.lpmaarifnu.or.id/events/flyer.jpg\",\n  \"event_date\": \"2024-03-15\",\n  \"event_location\": \"Jakarta\",\n  \"registration_url\": \"https://forms.lpmaarifnu.or.id/seminar\",\n  \"contact_person\": \"Ahmad\",\n  \"contact_phone\": \"081234567890\",\n  \"contact_email\": \"event@lpmaarifnu.or.id\",\n  \"order_number\": 1,\n  \"is_active\": true,\n  \"start_display_date\": null,\n  \"end_display_date\": null\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/admin/event-flyers",
+							"host": ["{{base_url}}"],
+							"path": ["admin", "event-flyers"]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Media Library",
+			"item": [
+				{
+					"name": "Get All Media",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/admin/media?page=1&limit=20&folder=&file_type=",
+							"host": ["{{base_url}}"],
+							"path": ["admin", "media"],
+							"query": [
+								{"key": "page", "value": "1"},
+								{"key": "limit", "value": "20"},
+								{"key": "folder", "value": ""},
+								{"key": "file_type", "value": ""}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Upload Media",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "file",
+									"type": "file",
+									"src": ""
+								},
+								{
+									"key": "folder",
+									"value": "general",
+									"type": "text"
+								},
+								{
+									"key": "alt_text",
+									"value": "Image description",
+									"type": "text"
+								},
+								{
+									"key": "caption",
+									"value": "Image caption",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{base_url}}/admin/media/upload",
+							"host": ["{{base_url}}"],
+							"path": ["admin", "media", "upload"]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Media",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/admin/media/:id",
+							"host": ["{{base_url}}"],
+							"path": ["admin", "media", ":id"],
+							"variable": [
+								{
+									"key": "id",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Contact Messages",
+			"item": [
+				{
+					"name": "Get All Messages",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/admin/contact-messages?page=1&limit=20&status=&priority=",
+							"host": ["{{base_url}}"],
+							"path": ["admin", "contact-messages"],
+							"query": [
+								{"key": "page", "value": "1"},
+								{"key": "limit", "value": "20"},
+								{"key": "status", "value": ""},
+								{"key": "priority", "value": ""}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Message By ID",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/admin/contact-messages/:id",
+							"host": ["{{base_url}}"],
+							"path": ["admin", "contact-messages", ":id"],
+							"variable": [
+								{
+									"key": "id",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Message Status",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"status\": \"in_progress\",\n  \"assigned_to\": 1,\n  \"notes\": \"Internal notes\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/admin/contact-messages/:id/status",
+							"host": ["{{base_url}}"],
+							"path": ["admin", "contact-messages", ":id", "status"],
+							"variable": [
+								{
+									"key": "id",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Reply Message",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"reply\": \"Terima kasih atas pesan Anda...\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/admin/contact-messages/:id/reply",
+							"host": ["{{base_url}}"],
+							"path": ["admin", "contact-messages", ":id", "reply"],
+							"variable": [
+								{
+									"key": "id",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Message",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/admin/contact-messages/:id",
+							"host": ["{{base_url}}"],
+							"path": ["admin", "contact-messages", ":id"],
+							"variable": [
+								{
+									"key": "id",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Settings",
+			"item": [
+				{
+					"name": "Get All Settings",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/admin/settings?group=",
+							"host": ["{{base_url}}"],
+							"path": ["admin", "settings"],
+							"query": [
+								{"key": "group", "value": ""}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Setting By Key",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/admin/settings/:key",
+							"host": ["{{base_url}}"],
+							"path": ["admin", "settings", ":key"],
+							"variable": [
+								{
+									"key": "key",
+									"value": "site_name"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Setting",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"setting_value\": \"LP Ma'arif NU\",\n  \"description\": \"Nama website\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/admin/settings/:key",
+							"host": ["{{base_url}}"],
+							"path": ["admin", "settings", ":key"],
+							"variable": [
+								{
+									"key": "key",
+									"value": "site_name"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Bulk Update Settings",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"settings\": [\n    {\"setting_key\": \"site_name\", \"setting_value\": \"LP Ma'arif NU\"},\n    {\"setting_key\": \"contact_email\", \"setting_value\": \"info@lpmaarifnu.or.id\"},\n    {\"setting_key\": \"contact_phone\", \"setting_value\": \"(021) 3920677\"}\n  ]\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/admin/settings/bulk",
+							"host": ["{{base_url}}"],
+							"path": ["admin", "settings", "bulk"]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Activity Logs",
+			"item": [
+				{
+					"name": "Get All Activity Logs",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/admin/activity-logs?page=1&limit=50&log_name=&causer_id=",
+							"host": ["{{base_url}}"],
+							"path": ["admin", "activity-logs"],
+							"query": [
+								{"key": "page", "value": "1"},
+								{"key": "limit", "value": "50"},
+								{"key": "log_name", "value": ""},
+								{"key": "causer_id", "value": ""}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Activity Log By ID",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/admin/activity-logs/:id",
+							"host": ["{{base_url}}"],
+							"path": ["admin", "activity-logs", ":id"],
+							"variable": [
+								{
+									"key": "id",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Notifications",
+			"item": [
+				{
+					"name": "Get All Notifications",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/admin/notifications?page=1&limit=20&unread_only=false",
+							"host": ["{{base_url}}"],
+							"path": ["admin", "notifications"],
+							"query": [
+								{"key": "page", "value": "1"},
+								{"key": "limit", "value": "20"},
+								{"key": "unread_only", "value": "false"}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Mark Notification as Read",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/admin/notifications/:id/read",
+							"host": ["{{base_url}}"],
+							"path": ["admin", "notifications", ":id", "read"],
+							"variable": [
+								{
+									"key": "id",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Mark All as Read",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/admin/notifications/read-all",
+							"host": ["{{base_url}}"],
+							"path": ["admin", "notifications", "read-all"]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Notification",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/admin/notifications/:id",
+							"host": ["{{base_url}}"],
+							"path": ["admin", "notifications", ":id"],
+							"variable": [
+								{
+									"key": "id",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "base_url",
+			"value": "http://localhost:8000/api/v1",
+			"type": "string"
+		},
+		{
+			"key": "access_token",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "refresh_token",
+			"value": "",
+			"type": "string"
+		}
+	]
+}
