@@ -50,12 +50,13 @@ func (s *settingService) GetByKey(key string) (*models.SettingResponse, error) {
 }
 
 func (s *settingService) Update(key string, value string) (*models.SettingResponse, error) {
-	if err := s.settingRepo.Update(key, value); err != nil {
+	setting, err := s.settingRepo.FindByKey(key)
+	if err != nil {
 		return nil, err
 	}
 
-	setting, err := s.settingRepo.FindByKey(key)
-	if err != nil {
+	setting.SettingValue = &value
+	if err := s.settingRepo.Update(setting); err != nil {
 		return nil, err
 	}
 
@@ -64,8 +65,29 @@ func (s *settingService) Update(key string, value string) (*models.SettingRespon
 }
 
 func (s *settingService) BulkUpdate(settings []models.SettingUpdateRequest) error {
-	for _, setting := range settings {
-		if err := s.settingRepo.Update(setting.Key, setting.Value); err != nil {
+	for _, settingReq := range settings {
+		setting, err := s.settingRepo.FindByKey(settingReq.SettingKey)
+		if err != nil {
+			return err
+		}
+
+		if settingReq.SettingValue != nil {
+			setting.SettingValue = settingReq.SettingValue
+		}
+		if settingReq.SettingType != nil {
+			setting.SettingType = *settingReq.SettingType
+		}
+		if settingReq.SettingGroup != nil {
+			setting.SettingGroup = *settingReq.SettingGroup
+		}
+		if settingReq.Description != nil {
+			setting.Description = settingReq.Description
+		}
+		if settingReq.IsPublic != nil {
+			setting.IsPublic = *settingReq.IsPublic
+		}
+
+		if err := s.settingRepo.Update(setting); err != nil {
 			return err
 		}
 	}
@@ -74,12 +96,14 @@ func (s *settingService) BulkUpdate(settings []models.SettingUpdateRequest) erro
 
 func (s *settingService) toResponse(setting *models.Setting) models.SettingResponse {
 	return models.SettingResponse{
-		ID:          setting.ID,
-		Key:         setting.Key,
-		Value:       setting.Value,
-		Group:       setting.Group,
-		Type:        setting.Type,
-		Description: setting.Description,
-		UpdatedAt:   setting.UpdatedAt,
+		ID:           setting.ID,
+		SettingKey:   setting.SettingKey,
+		SettingValue: setting.SettingValue,
+		SettingGroup: setting.SettingGroup,
+		SettingType:  setting.SettingType,
+		Description:  setting.Description,
+		IsPublic:     setting.IsPublic,
+		CreatedAt:    setting.CreatedAt,
+		UpdatedAt:    setting.UpdatedAt,
 	}
 }

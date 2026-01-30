@@ -26,7 +26,8 @@ func NewPageService(pageRepo repositories.PageRepository, cfg *config.Config) Pa
 }
 
 func (s *pageService) GetAll() ([]models.PageResponse, error) {
-	pages, err := s.pageRepo.FindAll()
+	filters := make(map[string]interface{})
+	pages, err := s.pageRepo.FindAll(filters)
 	if err != nil {
 		return nil, err
 	}
@@ -69,7 +70,7 @@ func (s *pageService) Update(id uint, req *models.PageUpdateRequest) (*models.Pa
 		page.Title = *req.Title
 	}
 	if req.Content != nil {
-		page.Content = *req.Content
+		page.Content = req.Content
 	}
 	if req.MetaTitle != nil {
 		page.MetaTitle = req.MetaTitle

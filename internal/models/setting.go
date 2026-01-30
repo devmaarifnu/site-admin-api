@@ -29,6 +29,7 @@ type SettingCreateRequest struct {
 }
 
 type SettingUpdateRequest struct {
+	SettingKey   string  `json:"setting_key" binding:"required"`
 	SettingValue *string `json:"setting_value"`
 	SettingType  *string `json:"setting_type" binding:"omitempty,oneof=string text number boolean json"`
 	SettingGroup *string `json:"setting_group"`

@@ -183,8 +183,7 @@ func setupDocumentRoutes(admin *gin.RouterGroup, handler *handlers.DocumentHandl
 	{
 		documents.GET("", handler.GetAll)
 		documents.GET("/:id", handler.GetByID)
-		documents.POST("", middlewares.PermissionMiddleware("documents.create"), handler.Upload)
-		documents.PUT("/:id", middlewares.PermissionMiddleware("documents.update"), handler.Update)
+		documents.POST("", middlewares.PermissionMiddleware("documents.create"), handler.Create)
 		documents.PUT("/:id/file", middlewares.PermissionMiddleware("documents.update"), handler.ReplaceFile)
 		documents.DELETE("/:id", middlewares.PermissionMiddleware("documents.delete"), handler.Delete)
 		documents.GET("/:id/stats", handler.GetStats)
@@ -201,7 +200,6 @@ func setupHeroSlideRoutes(admin *gin.RouterGroup, handler *handlers.HeroSlideHan
 		heroSlides.PUT("/:id", middlewares.PermissionMiddleware("hero_slides.update"), handler.Update)
 		heroSlides.DELETE("/:id", middlewares.PermissionMiddleware("hero_slides.delete"), handler.Delete)
 		heroSlides.PUT("/reorder", middlewares.PermissionMiddleware("hero_slides.update"), handler.Reorder)
-		heroSlides.PATCH("/:id/toggle", middlewares.PermissionMiddleware("hero_slides.update"), handler.ToggleStatus)
 	}
 }
 
@@ -246,10 +244,7 @@ func setupEventFlyerRoutes(admin *gin.RouterGroup, handler *handlers.EventFlyerH
 		eventFlyers.GET("", handler.GetAll)
 		eventFlyers.GET("/:id", handler.GetByID)
 		eventFlyers.POST("", middlewares.PermissionMiddleware("events.create"), handler.Create)
-		eventFlyers.PUT("/:id", middlewares.PermissionMiddleware("events.update"), handler.Update)
 		eventFlyers.DELETE("/:id", middlewares.PermissionMiddleware("events.delete"), handler.Delete)
-		eventFlyers.PUT("/reorder", middlewares.PermissionMiddleware("events.update"), handler.Reorder)
-		eventFlyers.PATCH("/:id/toggle", middlewares.PermissionMiddleware("events.update"), handler.ToggleStatus)
 	}
 }
 
@@ -259,10 +254,7 @@ func setupMediaRoutes(admin *gin.RouterGroup, handler *handlers.MediaHandler) {
 	{
 		media.GET("", handler.GetAll)
 		media.POST("/upload", middlewares.PermissionMiddleware("media.upload"), handler.Upload)
-		media.POST("/bulk-upload", middlewares.PermissionMiddleware("media.upload"), handler.BulkUpload)
-		media.PUT("/:id", middlewares.PermissionMiddleware("media.update"), handler.Update)
 		media.DELETE("/:id", middlewares.PermissionMiddleware("media.delete"), handler.Delete)
-		media.GET("/:id/usage", handler.GetUsage)
 	}
 }
 
@@ -285,7 +277,6 @@ func setupTagRoutes(admin *gin.RouterGroup, handler *handlers.TagHandler) {
 		tags.POST("", middlewares.PermissionMiddleware("tags.create"), handler.Create)
 		tags.PUT("/:id", middlewares.PermissionMiddleware("tags.update"), handler.Update)
 		tags.DELETE("/:id", middlewares.PermissionMiddleware("tags.delete"), handler.Delete)
-		tags.POST("/merge", middlewares.PermissionMiddleware("tags.update"), handler.Merge)
 	}
 }
 
@@ -296,11 +287,6 @@ func setupContactMessageRoutes(admin *gin.RouterGroup, handler *handlers.Contact
 		contactMessages.GET("", handler.GetAll)
 		contactMessages.GET("/:id", handler.GetByID)
 		contactMessages.PATCH("/:id/status", middlewares.PermissionMiddleware("contact_messages.update"), handler.UpdateStatus)
-		contactMessages.PATCH("/:id/priority", middlewares.PermissionMiddleware("contact_messages.update"), handler.UpdatePriority)
-		contactMessages.PATCH("/:id/assign", middlewares.PermissionMiddleware("contact_messages.update"), handler.Assign)
-		contactMessages.PATCH("/:id/notes", middlewares.PermissionMiddleware("contact_messages.update"), handler.AddNotes)
-		contactMessages.PATCH("/:id/replied", middlewares.PermissionMiddleware("contact_messages.update"), handler.MarkAsReplied)
-		contactMessages.PATCH("/:id/resolved", middlewares.PermissionMiddleware("contact_messages.update"), handler.MarkAsResolved)
 		contactMessages.DELETE("/:id", middlewares.PermissionMiddleware("contact_messages.delete"), handler.Delete)
 	}
 }
@@ -311,20 +297,8 @@ func setupSettingRoutes(admin *gin.RouterGroup, handler *handlers.SettingHandler
 	{
 		settings.GET("", handler.GetAll)
 		settings.PUT("", middlewares.PermissionMiddleware("settings.update"), handler.Update)
-		settings.PUT("/logo", middlewares.PermissionMiddleware("settings.update"), handler.UpdateLogo)
-		settings.PUT("/seo", middlewares.PermissionMiddleware("settings.update"), handler.UpdateSEO)
-		settings.PATCH("/maintenance", middlewares.PermissionMiddleware("settings.update"), handler.ToggleMaintenance)
 	}
 
-	// Analytics
-	analytics := admin.Group("/analytics")
-	analytics.Use(middlewares.PermissionMiddleware("analytics.view"))
-	{
-		analytics.GET("/dashboard", handler.GetDashboard)
-		analytics.GET("/content", handler.GetContentStats)
-		analytics.GET("/user-activity", handler.GetUserActivity)
-		analytics.GET("/export", handler.ExportReport)
-	}
 }
 
 func setupActivityLogRoutes(admin *gin.RouterGroup, handler *handlers.ActivityLogHandler) {
@@ -332,9 +306,6 @@ func setupActivityLogRoutes(admin *gin.RouterGroup, handler *handlers.ActivityLo
 	activityLogs.Use(middlewares.PermissionMiddleware("activity_logs.view"))
 	{
 		activityLogs.GET("", handler.GetAll)
-		activityLogs.GET("/user/:userId", handler.GetByUser)
-		activityLogs.GET("/subject/:type/:id", handler.GetBySubject)
-		activityLogs.DELETE("/cleanup", middlewares.PermissionMiddleware("activity_logs.delete"), handler.Cleanup)
 	}
 }
 
@@ -345,6 +316,5 @@ func setupNotificationRoutes(admin *gin.RouterGroup, handler *handlers.Notificat
 		notifications.PATCH("/:id/read", handler.MarkAsRead)
 		notifications.PATCH("/read-all", handler.MarkAllAsRead)
 		notifications.DELETE("/:id", handler.Delete)
-		notifications.GET("/unread-count", handler.GetUnreadCount)
 	}
 }

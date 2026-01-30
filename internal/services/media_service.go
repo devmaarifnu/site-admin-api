@@ -26,7 +26,7 @@ func NewMediaService(mediaRepo repositories.MediaRepository, cfg *config.Config)
 }
 
 func (s *mediaService) GetAll(page, limit int, filters map[string]interface{}) ([]models.MediaResponse, int64, error) {
-	media, total, err := s.mediaRepo.FindAll(page, limit, filters)
+	media, total, err := s.mediaRepo.FindAll(page, limit, "", filters)
 	if err != nil {
 		return nil, 0, err
 	}

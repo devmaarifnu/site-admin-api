@@ -1,0 +1,123 @@
+# LP Ma'arif NU Admin API Configuration
+
+# Application Settings
+app:
+  name: "LP Ma'arif NU Admin API"
+  env: "development"  # development, staging, production
+  port: 3000
+  api_version: "v1"
+
+# Database Configuration
+database:
+  host: "localhost"
+  port: 3306
+  user: "root"
+  password: ""
+  name: "lpmaarifnu_site"
+  max_idle_conns: 10
+  max_open_conns: 100
+  conn_max_lifetime: 3600  # seconds
+
+# JWT Configuration
+jwt:
+  secret: "your-super-secret-jwt-key-change-this-in-production"
+  expires_hours: 1
+  refresh_secret: "your-super-secret-refresh-token-key"
+  refresh_expires_hours: 168  # 7 days
+
+# CDN File Server Configuration
+cdn:
+  base_url: "http://localhost:8080"
+  base_url_prod: "https://cdn.maarifnu.or.id"
+  token: "your-cdn-server-token-here"
+  timeout: 30  # seconds
+
+# CORS Configuration
+cors:
+  allowed_origins:
+    - "http://localhost:3000"
+    - "http://localhost:5173"
+    - "https://maarifnu.or.id"
+    - "https://www.maarifnu.or.id"
+  allowed_methods:
+    - "GET"
+    - "POST"
+    - "PUT"
+    - "PATCH"
+    - "DELETE"
+    - "OPTIONS"
+  allowed_headers:
+    - "Origin"
+    - "Content-Type"
+    - "Accept"
+    - "Authorization"
+  allow_credentials: true
+  max_age: 3600
+
+# Rate Limiting
+rate_limit:
+  enabled: true
+  requests_per_minute: 100
+  login_max_attempts: 5
+  login_window_minutes: 15
+
+# File Upload Configuration
+upload:
+  max_size_image_mb: 5
+  max_size_document_mb: 50
+  allowed_image_types:
+    - "jpg"
+    - "jpeg"
+    - "png"
+    - "webp"
+    - "svg"
+    - "gif"
+  allowed_document_types:
+    - "pdf"
+    - "doc"
+    - "docx"
+    - "xls"
+    - "xlsx"
+    - "ppt"
+    - "pptx"
+
+# Logging Configuration
+logging:
+  level: "info"  # debug, info, warning, error, fatal
+  format: "json"  # json, text
+  output: "both"  # console, file, both
+  file:
+    path: "logs/app.log"
+    max_size_mb: 100
+    max_backups: 3
+    max_age_days: 28
+    compress: true
+
+# Email Configuration (for password reset)
+email:
+  smtp_host: "smtp.gmail.com"
+  smtp_port: 587
+  smtp_user: "your-email@gmail.com"
+  smtp_password: "your-email-password"
+  from_address: "noreply@lpmaarifnu.or.id"
+  from_name: "LP Ma'arif NU"
+
+# Frontend Configuration
+frontend:
+  url: "http://localhost:3000"
+  password_reset_path: "/reset-password"
+
+# Security Settings
+security:
+  password_min_length: 8
+  password_require_upper: true
+  password_require_lower: true
+  password_require_number: true
+  password_require_special: false
+  session_timeout_minutes: 60
+
+# Pagination Defaults
+pagination:
+  default_page: 1
+  default_limit: 20
+  max_limit: 100

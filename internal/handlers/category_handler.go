@@ -4,7 +4,6 @@ import (
 	"site-admin-api/internal/models"
 	"site-admin-api/internal/services"
 	"site-admin-api/pkg/response"
-	"site-admin-api/internal/utils"
 	"strconv"
 
 	"github.com/gin-gonic/gin"
@@ -19,22 +18,18 @@ func NewCategoryHandler(categoryService services.CategoryService) *CategoryHandl
 }
 
 func (h *CategoryHandler) GetAll(c *gin.Context) {
-	params := utils.GetPaginationParams(c, 20, 100)
-	search := c.Query("search")
-
 	filters := make(map[string]interface{})
 	if categoryType := c.Query("type"); categoryType != "" {
 		filters["type"] = categoryType
 	}
 
-	categories, total, err := h.categoryService.GetAll(params.Page, params.Limit, search, filters)
+	categories, err := h.categoryService.GetAll(filters)
 	if err != nil {
 		response.InternalServerError(c, err.Error())
 		return
 	}
 
-	pagination := utils.CalculatePaginationMeta(params.Page, params.Limit, total)
-	response.SuccessWithPagination(c, "Categories retrieved successfully", categories, pagination)
+	response.Success(c, "Categories retrieved successfully", categories)
 }
 
 func (h *CategoryHandler) GetByID(c *gin.Context) {

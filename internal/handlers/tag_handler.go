@@ -4,7 +4,6 @@ import (
 	"site-admin-api/internal/models"
 	"site-admin-api/internal/services"
 	"site-admin-api/pkg/response"
-	"site-admin-api/internal/utils"
 	"strconv"
 
 	"github.com/gin-gonic/gin"
@@ -19,17 +18,13 @@ func NewTagHandler(tagService services.TagService) *TagHandler {
 }
 
 func (h *TagHandler) GetAll(c *gin.Context) {
-	params := utils.GetPaginationParams(c, 20, 100)
-	search := c.Query("search")
-
-	tags, total, err := h.tagService.GetAll(params.Page, params.Limit, search)
+	tags, err := h.tagService.GetAll()
 	if err != nil {
 		response.InternalServerError(c, err.Error())
 		return
 	}
 
-	pagination := utils.CalculatePaginationMeta(params.Page, params.Limit, total)
-	response.SuccessWithPagination(c, "Tags retrieved successfully", tags, pagination)
+	response.Success(c, "Tags retrieved successfully", tags)
 }
 
 func (h *TagHandler) GetByID(c *gin.Context) {
@@ -113,16 +108,3 @@ func (h *TagHandler) Delete(c *gin.Context) {
 	response.Success(c, "Tag deleted successfully", nil)
 }
 
-func (h *TagHandler) Merge(c *gin.Context) {
-	var req struct {
-		SourceTagIDs []uint `json:"source_tag_ids" binding:"required"`
-		TargetTagID  uint   `json:"target_tag_id" binding:"required"`
-	}
-	if err := c.ShouldBindJSON(&req); err != nil {
-		response.BadRequest(c, "Invalid request", err.Error())
-		return
-	}
-
-	// Stub implementation - would need to implement actual merge logic
-	response.Success(c, "Tags merged successfully", nil)
-}
