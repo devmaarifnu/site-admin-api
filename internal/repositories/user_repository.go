@@ -1,6 +1,9 @@
 package repositories
 
 import (
+	"crypto/sha256"
+	"encoding/hex"
+	"fmt"
 	"site-admin-api/internal/models"
 	"time"
 
@@ -114,16 +117,42 @@ func (r *userRepository) DeletePasswordReset(email string) error {
 }
 
 func (r *userRepository) BlacklistToken(token string) error {
+	// Hash token dengan SHA-256 untuk mendapatkan 64 chars
+	hash := sha256.Sum256([]byte(token))
+	hashedToken := hex.EncodeToString(hash[:])
+
+	fmt.Printf("REPOSITORY: Blacklisting token - Hash: %s\n", hashedToken)
+
 	// Use personal_access_tokens table as blacklist
 	blacklist := &models.PersonalAccessToken{
-		Token:     token,
-		CreatedAt: time.Now(),
+		TokenableType: "blacklisted",
+		TokenableID:   0,
+		Name:          "logout",
+		Token:         hashedToken,
+		CreatedAt:     time.Now(),
+		UpdatedAt:     time.Now(),
 	}
-	return r.db.Create(blacklist).Error
+	err := r.db.Create(blacklist).Error
+	if err != nil {
+		fmt.Printf("REPOSITORY: DB Create error: %v\n", err)
+	} else {
+		fmt.Printf("REPOSITORY: Token blacklisted in DB successfully\n")
+	}
+	return err
 }
 
 func (r *userRepository) IsTokenBlacklisted(token string) bool {
+	// Hash token untuk pengecekan
+	hash := sha256.Sum256([]byte(token))
+	hashedToken := hex.EncodeToString(hash[:])
+
+	fmt.Printf("REPOSITORY: Checking if token is blacklisted - Hash: %s\n", hashedToken)
+
 	var count int64
-	r.db.Model(&models.PersonalAccessToken{}).Where("token = ?", token).Count(&count)
+	r.db.Model(&models.PersonalAccessToken{}).
+		Where("token = ? AND tokenable_type = ?", hashedToken, "blacklisted").
+		Count(&count)
+
+	fmt.Printf("REPOSITORY: Blacklist check result - count: %d\n", count)
 	return count > 0
 }

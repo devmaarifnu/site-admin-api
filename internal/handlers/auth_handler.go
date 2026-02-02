@@ -1,6 +1,7 @@
 package handlers
 
 import (
+	"fmt"
 	"strings"
 
 	"site-admin-api/internal/middlewares"
@@ -97,6 +98,9 @@ func (h *AuthHandler) Logout(c *gin.Context) {
 	if err := h.authService.BlacklistToken(token); err != nil {
 		// Log error but still return success
 		// User intention to logout should succeed
+		fmt.Printf("ERROR: Failed to blacklist token during logout: %v\n", err)
+	} else {
+		fmt.Printf("SUCCESS: Token blacklisted successfully\n")
 	}
 
 	response.Success(c, "Logout successful", nil)

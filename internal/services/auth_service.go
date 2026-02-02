@@ -4,6 +4,7 @@ import (
 	"crypto/rand"
 	"encoding/hex"
 	"errors"
+	"fmt"
 	"time"
 
 	"site-admin-api/config"
@@ -186,14 +187,23 @@ func (s *authService) ResetPassword(token, newPassword string) error {
 
 func (s *authService) ValidateToken(token string) (*utils.JWTClaims, error) {
 	// Check if token is blacklisted
-	if s.userRepo.IsTokenBlacklisted(token) {
+	isBlacklisted := s.userRepo.IsTokenBlacklisted(token)
+	fmt.Printf("AUTH SERVICE: Token blacklist check - isBlacklisted: %v\n", isBlacklisted)
+	if isBlacklisted {
 		return nil, errors.New("token has been revoked")
 	}
 	return utils.ValidateJWT(token, s.cfg.JWT.Secret)
 }
 
 func (s *authService) BlacklistToken(token string) error {
-	return s.userRepo.BlacklistToken(token)
+	fmt.Printf("AUTH SERVICE: Attempting to blacklist token\n")
+	err := s.userRepo.BlacklistToken(token)
+	if err != nil {
+		fmt.Printf("AUTH SERVICE: Failed to blacklist token: %v\n", err)
+	} else {
+		fmt.Printf("AUTH SERVICE: Token blacklisted successfully\n")
+	}
+	return err
 }
 
 // generateSecureToken generates a secure random token

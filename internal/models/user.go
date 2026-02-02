@@ -131,9 +131,16 @@ func (PasswordReset) TableName() string {
 
 // PersonalAccessToken represents the personal_access_tokens table (used for token blacklist)
 type PersonalAccessToken struct {
-	ID        uint      `gorm:"primaryKey" json:"id"`
-	Token     string    `gorm:"type:text;not null;index" json:"token"`
-	CreatedAt time.Time `json:"created_at"`
+	ID            uint       `gorm:"primaryKey" json:"id"`
+	TokenableType string     `gorm:"type:varchar(255);not null" json:"tokenable_type"`
+	TokenableID   uint       `gorm:"not null" json:"tokenable_id"`
+	Name          string     `gorm:"type:varchar(255);not null" json:"name"`
+	Token         string     `gorm:"type:varchar(64);not null;uniqueIndex" json:"token"`
+	Abilities     *string    `gorm:"type:text" json:"abilities"`
+	LastUsedAt    *time.Time `json:"last_used_at"`
+	ExpiresAt     *time.Time `json:"expires_at"`
+	CreatedAt     time.Time  `json:"created_at"`
+	UpdatedAt     time.Time  `json:"updated_at"`
 }
 
 // TableName specifies the table name

@@ -1,6 +1,7 @@
 package middlewares
 
 import (
+	"fmt"
 	"strings"
 
 	"site-admin-api/config"
@@ -34,10 +35,12 @@ func AuthMiddleware(cfg *config.Config, authService services.AuthService) gin.Ha
 		// Validate JWT token (includes blacklist check)
 		claims, err := authService.ValidateToken(tokenString)
 		if err != nil {
+			fmt.Printf("AUTH MIDDLEWARE: Token validation failed: %v\n", err)
 			response.Unauthorized(c, "Invalid or expired token")
 			c.Abort()
 			return
 		}
+		fmt.Printf("AUTH MIDDLEWARE: Token validated successfully for user ID: %d\n", claims.UserID)
 
 		// Set user info in context for later use
 		c.Set("user_id", claims.UserID)
