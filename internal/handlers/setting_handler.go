@@ -1,6 +1,8 @@
 package handlers
 
 import (
+	"fmt"
+
 	"site-admin-api/internal/models"
 	"site-admin-api/internal/services"
 	"site-admin-api/pkg/response"
@@ -41,23 +43,36 @@ func (h *SettingHandler) GetByKey(c *gin.Context) {
 }
 
 func (h *SettingHandler) Update(c *gin.Context) {
-	key := c.Param("key")
-
-	var req struct {
-		Value string `json:"value" binding:"required"`
-	}
+	// Accept settings as key-value pairs
+	var req map[string]interface{}
 	if err := c.ShouldBindJSON(&req); err != nil {
 		response.BadRequest(c, "Invalid request", err.Error())
 		return
 	}
 
-	setting, err := h.settingService.Update(key, req.Value)
-	if err != nil {
+	// Convert to SettingUpdateRequest array
+	var settings []models.SettingUpdateRequest
+	for key, value := range req {
+		valStr := ""
+		if value != nil {
+			if str, ok := value.(string); ok {
+				valStr = str
+			} else {
+				valStr = fmt.Sprintf("%v", value)
+			}
+		}
+		settings = append(settings, models.SettingUpdateRequest{
+			SettingKey:   key,
+			SettingValue: &valStr,
+		})
+	}
+
+	if err := h.settingService.BulkUpdate(settings); err != nil {
 		response.InternalServerError(c, err.Error())
 		return
 	}
 
-	response.Success(c, "Setting updated successfully", setting)
+	response.Success(c, "Settings updated successfully", nil)
 }
 
 func (h *SettingHandler) BulkUpdate(c *gin.Context) {

@@ -21,6 +21,7 @@ type AuthService interface {
 	ForgotPassword(email string) error
 	ResetPassword(token, newPassword string) error
 	ValidateToken(token string) (*utils.JWTClaims, error)
+	BlacklistToken(token string) error
 }
 
 type authService struct {
@@ -184,7 +185,15 @@ func (s *authService) ResetPassword(token, newPassword string) error {
 }
 
 func (s *authService) ValidateToken(token string) (*utils.JWTClaims, error) {
+	// Check if token is blacklisted
+	if s.userRepo.IsTokenBlacklisted(token) {
+		return nil, errors.New("token has been revoked")
+	}
 	return utils.ValidateJWT(token, s.cfg.JWT.Secret)
+}
+
+func (s *authService) BlacklistToken(token string) error {
+	return s.userRepo.BlacklistToken(token)
 }
 
 // generateSecureToken generates a secure random token

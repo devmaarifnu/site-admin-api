@@ -4,14 +4,14 @@ import (
 	"strings"
 
 	"site-admin-api/config"
-	"site-admin-api/internal/utils"
+	"site-admin-api/internal/services"
 	"site-admin-api/pkg/response"
 
 	"github.com/gin-gonic/gin"
 )
 
 // AuthMiddleware validates JWT token from Authorization header
-func AuthMiddleware(cfg *config.Config) gin.HandlerFunc {
+func AuthMiddleware(cfg *config.Config, authService services.AuthService) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		// Get token from Authorization header
 		authHeader := c.GetHeader("Authorization")
@@ -31,8 +31,8 @@ func AuthMiddleware(cfg *config.Config) gin.HandlerFunc {
 
 		tokenString := parts[1]
 
-		// Validate JWT token
-		claims, err := utils.ValidateJWT(tokenString, cfg.JWT.Secret)
+		// Validate JWT token (includes blacklist check)
+		claims, err := authService.ValidateToken(tokenString)
 		if err != nil {
 			response.Unauthorized(c, "Invalid or expired token")
 			c.Abort()

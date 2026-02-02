@@ -1,10 +1,11 @@
 package handlers
 
 import (
+	"site-admin-api/internal/middlewares"
 	"site-admin-api/internal/models"
 	"site-admin-api/internal/services"
-	"site-admin-api/pkg/response"
 	"site-admin-api/internal/utils"
+	"site-admin-api/pkg/response"
 	"strconv"
 
 	"github.com/gin-gonic/gin"
@@ -56,8 +57,7 @@ func (h *EventFlyerHandler) Create(c *gin.Context) {
 	}
 
 	// Get uploader ID from context
-	userID, _ := c.Get("user_id")
-	uploaderID := userID.(uint)
+	uploaderID := middlewares.GetUserID(c)
 
 	flyer, err := h.eventFlyerService.Create(&req, uploaderID)
 	if err != nil {

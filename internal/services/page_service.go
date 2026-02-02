@@ -11,6 +11,7 @@ type PageService interface {
 	GetByID(id uint) (*models.PageResponse, error)
 	GetBySlug(slug string) (*models.PageResponse, error)
 	Update(id uint, req *models.PageUpdateRequest) (*models.PageResponse, error)
+	UpdateBySlug(slug string, req *models.PageUpdateRequest) (*models.PageResponse, error)
 }
 
 type pageService struct {
@@ -81,6 +82,51 @@ func (s *pageService) Update(id uint, req *models.PageUpdateRequest) (*models.Pa
 	if req.MetaKeywords != nil {
 		page.MetaKeywords = req.MetaKeywords
 	}
+	if req.IsActive != nil {
+		page.IsActive = *req.IsActive
+	}
+	if req.Template != nil {
+		page.Template = *req.Template
+	}
+
+	if err := s.pageRepo.Update(page); err != nil {
+		return nil, err
+	}
+
+	response := s.toResponse(page)
+	return &response, nil
+}
+
+func (s *pageService) UpdateBySlug(slug string, req *models.PageUpdateRequest) (*models.PageResponse, error) {
+	page, err := s.pageRepo.FindBySlug(slug)
+	if err != nil {
+		return nil, err
+	}
+
+	if req.Title != nil {
+		page.Title = *req.Title
+	}
+	if req.Content != nil {
+		page.Content = req.Content
+	}
+	if req.Metadata != nil {
+		page.Metadata = req.Metadata
+	}
+	if req.MetaTitle != nil {
+		page.MetaTitle = req.MetaTitle
+	}
+	if req.MetaDescription != nil {
+		page.MetaDescription = req.MetaDescription
+	}
+	if req.MetaKeywords != nil {
+		page.MetaKeywords = req.MetaKeywords
+	}
+	if req.IsActive != nil {
+		page.IsActive = *req.IsActive
+	}
+	if req.Template != nil {
+		page.Template = *req.Template
+	}
 
 	if err := s.pageRepo.Update(page); err != nil {
 		return nil, err
@@ -96,9 +142,14 @@ func (s *pageService) toResponse(page *models.Page) models.PageResponse {
 		Title:           page.Title,
 		Slug:            page.Slug,
 		Content:         page.Content,
+		Metadata:        page.Metadata,
+		Template:        page.Template,
+		IsActive:        page.IsActive,
 		MetaTitle:       page.MetaTitle,
 		MetaDescription: page.MetaDescription,
 		MetaKeywords:    page.MetaKeywords,
+		LastUpdatedBy:   page.LastUpdatedBy,
+		LastEditor:      page.LastEditor,
 		CreatedAt:       page.CreatedAt,
 		UpdatedAt:       page.UpdatedAt,
 	}

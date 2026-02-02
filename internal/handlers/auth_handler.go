@@ -1,6 +1,8 @@
 package handlers
 
 import (
+	"strings"
+
 	"site-admin-api/internal/middlewares"
 	"site-admin-api/internal/models"
 	"site-admin-api/internal/services"
@@ -76,8 +78,27 @@ func (h *AuthHandler) GetCurrentUser(c *gin.Context) {
 
 // Logout handles user logout
 func (h *AuthHandler) Logout(c *gin.Context) {
-	// In JWT, logout is typically handled client-side by removing the token
-	// Server-side logout would require token blacklisting (optional feature)
+	// Get token from header
+	authHeader := c.GetHeader("Authorization")
+	if authHeader == "" {
+		response.Success(c, "Logout successful", nil)
+		return
+	}
+
+	// Extract token
+	parts := strings.SplitN(authHeader, " ", 2)
+	if len(parts) != 2 {
+		response.Success(c, "Logout successful", nil)
+		return
+	}
+
+	token := parts[1]
+	// Blacklist the token
+	if err := h.authService.BlacklistToken(token); err != nil {
+		// Log error but still return success
+		// User intention to logout should succeed
+	}
+
 	response.Success(c, "Logout successful", nil)
 }
 

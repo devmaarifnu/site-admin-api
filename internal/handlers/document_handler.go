@@ -1,10 +1,11 @@
 package handlers
 
 import (
+	"site-admin-api/internal/middlewares"
 	"site-admin-api/internal/models"
 	"site-admin-api/internal/services"
-	"site-admin-api/pkg/response"
 	"site-admin-api/internal/utils"
+	"site-admin-api/pkg/response"
 	"strconv"
 
 	"github.com/gin-gonic/gin"
@@ -67,8 +68,7 @@ func (h *DocumentHandler) Create(c *gin.Context) {
 	}
 
 	// Get uploader ID from context (set by auth middleware)
-	userID, _ := c.Get("user_id")
-	uploaderID := userID.(uint)
+	uploaderID := middlewares.GetUserID(c)
 
 	document, err := h.documentService.Create(&req, uploaderID)
 	if err != nil {
@@ -177,8 +177,7 @@ func (h *DocumentHandler) Upload(c *gin.Context) {
 	}
 
 	// Get uploader ID from context (set by auth middleware)
-	userID, _ := c.Get("user_id")
-	uploaderID := userID.(uint)
+	uploaderID := middlewares.GetUserID(c)
 
 	document, err := h.documentService.Create(&req, uploaderID)
 	if err != nil {

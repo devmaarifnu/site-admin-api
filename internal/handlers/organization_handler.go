@@ -10,14 +10,29 @@ import (
 )
 
 type OrganizationHandler struct {
-	positionService    services.OrganizationPositionService
-	boardMemberService services.BoardMemberService
+	positionService         services.OrganizationPositionService
+	boardMemberService      services.BoardMemberService
+	pengurusService         services.PengurusService
+	departmentService       services.DepartmentService
+	editorialTeamService    services.EditorialTeamService
+	editorialCouncilService services.EditorialCouncilService
 }
 
-func NewOrganizationHandler(positionService services.OrganizationPositionService, boardMemberService services.BoardMemberService) *OrganizationHandler {
+func NewOrganizationHandler(
+	positionService services.OrganizationPositionService,
+	boardMemberService services.BoardMemberService,
+	pengurusService services.PengurusService,
+	departmentService services.DepartmentService,
+	editorialTeamService services.EditorialTeamService,
+	editorialCouncilService services.EditorialCouncilService,
+) *OrganizationHandler {
 	return &OrganizationHandler{
-		positionService:    positionService,
-		boardMemberService: boardMemberService,
+		positionService:         positionService,
+		boardMemberService:      boardMemberService,
+		pengurusService:         pengurusService,
+		departmentService:       departmentService,
+		editorialTeamService:    editorialTeamService,
+		editorialCouncilService: editorialCouncilService,
 	}
 }
 
@@ -194,36 +209,137 @@ func (h *OrganizationHandler) DeleteBoardMember(c *gin.Context) {
 
 // Stub methods for Pengurus
 func (h *OrganizationHandler) GetPengurus(c *gin.Context) {
-	response.Success(c, "Pengurus list (stub)", []interface{}{})
+	filters := make(map[string]interface{})
+	if kategori := c.Query("kategori"); kategori != "" {
+		filters["kategori"] = kategori
+	}
+	if isActive := c.Query("is_active"); isActive != "" {
+		filters["is_active"] = isActive
+	}
+
+	pengurusList, err := h.pengurusService.GetAll(filters)
+	if err != nil {
+		response.InternalServerError(c, err.Error())
+		return
+	}
+
+	response.Success(c, "Pengurus retrieved successfully", pengurusList)
 }
 
 func (h *OrganizationHandler) GetPengurusByID(c *gin.Context) {
-	response.Success(c, "Pengurus detail (stub)", map[string]interface{}{})
+	id, err := strconv.ParseUint(c.Param("id"), 10, 32)
+	if err != nil {
+		response.BadRequest(c, "Invalid ID", err.Error())
+		return
+	}
+
+	pengurus, err := h.pengurusService.GetByID(uint(id))
+	if err != nil {
+		response.NotFound(c, "Pengurus not found")
+		return
+	}
+
+	response.Success(c, "Pengurus retrieved successfully", pengurus)
 }
 
 func (h *OrganizationHandler) CreatePengurus(c *gin.Context) {
-	response.Created(c, "Pengurus created (stub)", map[string]interface{}{})
+	var req models.PengurusCreateRequest
+	if err := c.ShouldBindJSON(&req); err != nil {
+		response.BadRequest(c, "Invalid request", err.Error())
+		return
+	}
+
+	pengurus, err := h.pengurusService.Create(&req)
+	if err != nil {
+		response.InternalServerError(c, err.Error())
+		return
+	}
+
+	response.Created(c, "Pengurus created successfully", pengurus)
 }
 
 func (h *OrganizationHandler) UpdatePengurus(c *gin.Context) {
-	response.Success(c, "Pengurus updated (stub)", map[string]interface{}{})
+	id, err := strconv.ParseUint(c.Param("id"), 10, 32)
+	if err != nil {
+		response.BadRequest(c, "Invalid ID", err.Error())
+		return
+	}
+
+	var req models.PengurusUpdateRequest
+	if err := c.ShouldBindJSON(&req); err != nil {
+		response.BadRequest(c, "Invalid request", err.Error())
+		return
+	}
+
+	pengurus, err := h.pengurusService.Update(uint(id), &req)
+	if err != nil {
+		response.InternalServerError(c, err.Error())
+		return
+	}
+
+	response.Success(c, "Pengurus updated successfully", pengurus)
 }
 
 func (h *OrganizationHandler) DeletePengurus(c *gin.Context) {
-	response.Success(c, "Pengurus deleted (stub)", nil)
+	id, err := strconv.ParseUint(c.Param("id"), 10, 32)
+	if err != nil {
+		response.BadRequest(c, "Invalid ID", err.Error())
+		return
+	}
+
+	if err := h.pengurusService.Delete(uint(id)); err != nil {
+		response.InternalServerError(c, err.Error())
+		return
+	}
+
+	response.Success(c, "Pengurus deleted successfully", nil)
 }
 
 func (h *OrganizationHandler) ReorderPengurus(c *gin.Context) {
-	response.Success(c, "Pengurus reordered (stub)", nil)
+	var req []map[string]interface{}
+	if err := c.ShouldBindJSON(&req); err != nil {
+		response.BadRequest(c, "Invalid request", err.Error())
+		return
+	}
+
+	if err := h.pengurusService.Reorder(req); err != nil {
+		response.InternalServerError(c, err.Error())
+		return
+	}
+
+	response.Success(c, "Pengurus reordered successfully", nil)
 }
 
 // Stub methods for Departments
 func (h *OrganizationHandler) GetDepartments(c *gin.Context) {
-	response.Success(c, "Departments list (stub)", []interface{}{})
+	filters := make(map[string]interface{})
+	if isActive := c.Query("is_active"); isActive != "" {
+		filters["is_active"] = isActive
+	}
+
+	departments, err := h.departmentService.GetAll(filters)
+	if err != nil {
+		response.InternalServerError(c, err.Error())
+		return
+	}
+
+	response.Success(c, "Departments retrieved successfully", departments)
 }
 
 func (h *OrganizationHandler) GetDepartmentByID(c *gin.Context) {
-	response.Success(c, "Department detail (stub)", map[string]interface{}{})
+	id, err := strconv.ParseUint(c.Param("id"), 10, 32)
+	if err != nil {
+		response.BadRequest(c, "Invalid ID", err.Error())
+		return
+	}
+
+	dept, err := h.departmentService.GetByID(uint(id))
+	if err != nil {
+		response.NotFound(c, "Department not found")
+		return
+	}
+
+	response.Success(c, "Department retrieved successfully", dept)
 }
 
 func (h *OrganizationHandler) CreateDepartment(c *gin.Context) {
@@ -231,7 +347,25 @@ func (h *OrganizationHandler) CreateDepartment(c *gin.Context) {
 }
 
 func (h *OrganizationHandler) UpdateDepartment(c *gin.Context) {
-	response.Success(c, "Department updated (stub)", map[string]interface{}{})
+	id, err := strconv.ParseUint(c.Param("id"), 10, 32)
+	if err != nil {
+		response.BadRequest(c, "Invalid ID", err.Error())
+		return
+	}
+
+	var req models.DepartmentUpdateRequest
+	if err := c.ShouldBindJSON(&req); err != nil {
+		response.BadRequest(c, "Invalid request", err.Error())
+		return
+	}
+
+	dept, err := h.departmentService.Update(uint(id), &req)
+	if err != nil {
+		response.InternalServerError(c, err.Error())
+		return
+	}
+
+	response.Success(c, "Department updated successfully", dept)
 }
 
 func (h *OrganizationHandler) DeleteDepartment(c *gin.Context) {
@@ -240,17 +374,78 @@ func (h *OrganizationHandler) DeleteDepartment(c *gin.Context) {
 
 // Stub methods for Editorial
 func (h *OrganizationHandler) GetEditorialTeam(c *gin.Context) {
-	response.Success(c, "Editorial team (stub)", []interface{}{})
+	filters := make(map[string]interface{})
+	if roleType := c.Query("role_type"); roleType != "" {
+		filters["role_type"] = roleType
+	}
+	if isActive := c.Query("is_active"); isActive != "" {
+		filters["is_active"] = isActive
+	}
+
+	members, err := h.editorialTeamService.GetAll(filters)
+	if err != nil {
+		response.InternalServerError(c, err.Error())
+		return
+	}
+
+	response.Success(c, "Editorial team retrieved successfully", members)
 }
 
 func (h *OrganizationHandler) UpdateEditorialTeam(c *gin.Context) {
-	response.Success(c, "Editorial team updated (stub)", nil)
+	id, err := strconv.ParseUint(c.Param("id"), 10, 32)
+	if err != nil {
+		response.BadRequest(c, "Invalid ID", err.Error())
+		return
+	}
+
+	var req models.EditorialTeamUpdateRequest
+	if err := c.ShouldBindJSON(&req); err != nil {
+		response.BadRequest(c, "Invalid request", err.Error())
+		return
+	}
+
+	member, err := h.editorialTeamService.Update(uint(id), &req)
+	if err != nil {
+		response.InternalServerError(c, err.Error())
+		return
+	}
+
+	response.Success(c, "Editorial team member updated successfully", member)
 }
 
 func (h *OrganizationHandler) GetEditorialCouncil(c *gin.Context) {
-	response.Success(c, "Editorial council (stub)", []interface{}{})
+	filters := make(map[string]interface{})
+	if isActive := c.Query("is_active"); isActive != "" {
+		filters["is_active"] = isActive
+	}
+
+	members, err := h.editorialCouncilService.GetAll(filters)
+	if err != nil {
+		response.InternalServerError(c, err.Error())
+		return
+	}
+
+	response.Success(c, "Editorial council retrieved successfully", members)
 }
 
 func (h *OrganizationHandler) UpdateEditorialCouncil(c *gin.Context) {
-	response.Success(c, "Editorial council updated (stub)", nil)
+	id, err := strconv.ParseUint(c.Param("id"), 10, 32)
+	if err != nil {
+		response.BadRequest(c, "Invalid ID", err.Error())
+		return
+	}
+
+	var req models.EditorialCouncilUpdateRequest
+	if err := c.ShouldBindJSON(&req); err != nil {
+		response.BadRequest(c, "Invalid request", err.Error())
+		return
+	}
+
+	member, err := h.editorialCouncilService.Update(uint(id), &req)
+	if err != nil {
+		response.InternalServerError(c, err.Error())
+		return
+	}
+
+	response.Success(c, "Editorial council member updated successfully", member)
 }

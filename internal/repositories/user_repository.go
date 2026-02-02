@@ -19,6 +19,8 @@ type UserRepository interface {
 	CreatePasswordReset(reset *models.PasswordReset) error
 	FindPasswordReset(token string) (*models.PasswordReset, error)
 	DeletePasswordReset(email string) error
+	BlacklistToken(token string) error
+	IsTokenBlacklisted(token string) bool
 }
 
 type userRepository struct {
@@ -109,4 +111,19 @@ func (r *userRepository) FindPasswordReset(token string) (*models.PasswordReset,
 
 func (r *userRepository) DeletePasswordReset(email string) error {
 	return r.db.Where("email = ?", email).Delete(&models.PasswordReset{}).Error
+}
+
+func (r *userRepository) BlacklistToken(token string) error {
+	// Use personal_access_tokens table as blacklist
+	blacklist := &models.PersonalAccessToken{
+		Token:     token,
+		CreatedAt: time.Now(),
+	}
+	return r.db.Create(blacklist).Error
+}
+
+func (r *userRepository) IsTokenBlacklisted(token string) bool {
+	var count int64
+	r.db.Model(&models.PersonalAccessToken{}).Where("token = ?", token).Count(&count)
+	return count > 0
 }

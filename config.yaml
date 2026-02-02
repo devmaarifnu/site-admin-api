@@ -13,7 +13,7 @@ database:
   port: 3306
   user: "root"
   password: ""
-  name: "lpmaarifnu_site"
+  name: "lp_maarif_nu"
   max_idle_conns: 10
   max_open_conns: 100
   conn_max_lifetime: 3600  # seconds

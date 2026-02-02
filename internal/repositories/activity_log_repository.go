@@ -24,17 +24,17 @@ func (r *activityLogRepository) FindAll(page, limit int, filters map[string]inte
 	var logs []models.ActivityLog
 	var total int64
 
-	query := r.db.Model(&models.ActivityLog{}).Preload("User")
+	query := r.db.Model(&models.ActivityLog{})
 
 	// Apply filters
 	if userID, ok := filters["user_id"]; ok {
-		query = query.Where("user_id = ?", userID)
+		query = query.Where("causer_id = ?", userID)
 	}
 	if action, ok := filters["action"]; ok {
-		query = query.Where("action = ?", action)
+		query = query.Where("log_name = ?", action)
 	}
 	if entityType, ok := filters["entity_type"]; ok {
-		query = query.Where("entity_type = ?", entityType)
+		query = query.Where("subject_type = ?", entityType)
 	}
 
 	// Count total
@@ -49,7 +49,7 @@ func (r *activityLogRepository) FindAll(page, limit int, filters map[string]inte
 
 func (r *activityLogRepository) FindByID(id uint) (*models.ActivityLog, error) {
 	var log models.ActivityLog
-	err := r.db.Preload("User").First(&log, id).Error
+	err := r.db.First(&log, id).Error
 	return &log, err
 }
 

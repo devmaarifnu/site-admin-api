@@ -66,14 +66,26 @@ func (s *settingService) Update(key string, value string) (*models.SettingRespon
 
 func (s *settingService) BulkUpdate(settings []models.SettingUpdateRequest) error {
 	for _, settingReq := range settings {
+		// Try to find existing setting
 		setting, err := s.settingRepo.FindByKey(settingReq.SettingKey)
+
 		if err != nil {
-			return err
+			// Setting doesn't exist, create new one
+			setting = &models.Setting{
+				SettingKey:   settingReq.SettingKey,
+				SettingValue: settingReq.SettingValue,
+				SettingType:  "string",
+				SettingGroup: "general",
+				IsPublic:     false,
+			}
+		} else {
+			// Update existing setting value
+			if settingReq.SettingValue != nil {
+				setting.SettingValue = settingReq.SettingValue
+			}
 		}
 
-		if settingReq.SettingValue != nil {
-			setting.SettingValue = settingReq.SettingValue
-		}
+		// Apply optional fields
 		if settingReq.SettingType != nil {
 			setting.SettingType = *settingReq.SettingType
 		}
@@ -87,7 +99,8 @@ func (s *settingService) BulkUpdate(settings []models.SettingUpdateRequest) erro
 			setting.IsPublic = *settingReq.IsPublic
 		}
 
-		if err := s.settingRepo.Update(setting); err != nil {
+		// Upsert (create or update)
+		if err := s.settingRepo.Upsert(setting); err != nil {
 			return err
 		}
 	}

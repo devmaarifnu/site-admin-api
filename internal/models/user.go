@@ -128,3 +128,15 @@ type PasswordReset struct {
 func (PasswordReset) TableName() string {
 	return "password_resets"
 }
+
+// PersonalAccessToken represents the personal_access_tokens table (used for token blacklist)
+type PersonalAccessToken struct {
+	ID        uint      `gorm:"primaryKey" json:"id"`
+	Token     string    `gorm:"type:text;not null;index" json:"token"`
+	CreatedAt time.Time `json:"created_at"`
+}
+
+// TableName specifies the table name
+func (PersonalAccessToken) TableName() string {
+	return "personal_access_tokens"
+}

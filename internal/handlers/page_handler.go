@@ -56,9 +56,9 @@ func (h *PageHandler) GetBySlug(c *gin.Context) {
 }
 
 func (h *PageHandler) Update(c *gin.Context) {
-	id, err := strconv.ParseUint(c.Param("id"), 10, 32)
-	if err != nil {
-		response.BadRequest(c, "Invalid ID", err.Error())
+	slug := c.Param("slug")
+	if slug == "" {
+		response.BadRequest(c, "Slug is required", "Slug parameter is empty")
 		return
 	}
 
@@ -68,7 +68,7 @@ func (h *PageHandler) Update(c *gin.Context) {
 		return
 	}
 
-	page, err := h.pageService.Update(uint(id), &req)
+	page, err := h.pageService.UpdateBySlug(slug, &req)
 	if err != nil {
 		response.InternalServerError(c, err.Error())
 		return

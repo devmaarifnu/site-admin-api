@@ -1,0 +1,2206 @@
+{
+  "info": {
+    "_postman_id": "lpmaarif-admin-api-complete",
+    "name": "LP Ma'arif NU Admin API - Complete",
+    "description": "Complete API collection for LP Ma'arif NU Admin Panel",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{access_token}}",
+        "type": "string"
+      }
+    ]
+  },
+  "item": [
+    {
+      "name": "Health Check",
+      "item": [
+        {
+          "name": "Health Check",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/../../health",
+              "host": ["{{base_url}}"],
+              "path": ["..", "..", "health"]
+            },
+            "description": "Check if the API is running"
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Authentication",
+      "item": [
+        {
+          "name": "Login",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "if (pm.response.code === 200) {",
+                  "    var jsonData = pm.response.json();",
+                  "    if (jsonData.data && jsonData.data.access_token) {",
+                  "        pm.collectionVariables.set(\"access_token\", jsonData.data.access_token);",
+                  "    }",
+                  "    if (jsonData.data && jsonData.data.refresh_token) {",
+                  "        pm.collectionVariables.set(\"refresh_token\", jsonData.data.refresh_token);",
+                  "    }",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"admin@lpmaarif.nu.or.id\",\n  \"password\": \"password123\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/admin/auth/login",
+              "host": ["{{base_url}}"],
+              "path": ["admin", "auth", "login"]
+            },
+            "description": "Login with email and password to get access and refresh tokens"
+          },
+          "response": []
+        },
+        {
+          "name": "Refresh Token",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "if (pm.response.code === 200) {",
+                  "    var jsonData = pm.response.json();",
+                  "    if (jsonData.data && jsonData.data.access_token) {",
+                  "        pm.collectionVariables.set(\"access_token\", jsonData.data.access_token);",
+                  "    }",
+                  "    if (jsonData.data && jsonData.data.refresh_token) {",
+                  "        pm.collectionVariables.set(\"refresh_token\", jsonData.data.refresh_token);",
+                  "    }",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"refresh_token\": \"{{refresh_token}}\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/admin/auth/refresh",
+              "host": ["{{base_url}}"],
+              "path": ["admin", "auth", "refresh"]
+            },
+            "description": "Refresh access token using refresh token"
+          },
+          "response": []
+        },
+        {
+          "name": "Get Current User",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/admin/auth/me",
+              "host": ["{{base_url}}"],
+              "path": ["admin", "auth", "me"]
+            },
+            "description": "Get current authenticated user information"
+          },
+          "response": []
+        },
+        {
+          "name": "Forgot Password",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"admin@lpmaarif.nu.or.id\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/admin/auth/forgot-password",
+              "host": ["{{base_url}}"],
+              "path": ["admin", "auth", "forgot-password"]
+            },
+            "description": "Request password reset link via email"
+          },
+          "response": []
+        },
+        {
+          "name": "Reset Password",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"token\": \"reset-token-here\",\n  \"password\": \"newpassword123\",\n  \"password_confirmation\": \"newpassword123\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/admin/auth/reset-password",
+              "host": ["{{base_url}}"],
+              "path": ["admin", "auth", "reset-password"]
+            },
+            "description": "Reset password using token from email"
+          },
+          "response": []
+        },
+        {
+          "name": "Change Password",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"old_password\": \"password123\",\n  \"new_password\": \"newpassword123\",\n  \"new_password_confirmation\": \"newpassword123\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/admin/auth/change-password",
+              "host": ["{{base_url}}"],
+              "path": ["admin", "auth", "change-password"]
+            },
+            "description": "Change password for authenticated user"
+          },
+          "response": []
+        },
+        {
+          "name": "Logout",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/admin/auth/logout",
+              "host": ["{{base_url}}"],
+              "path": ["admin", "auth", "logout"]
+            },
+            "description": "Logout and invalidate current session"
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Users",
+      "item": [
+        {
+          "name": "Get All Users",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/admin/users?page=1&limit=10&search=&role=",
+              "host": ["{{base_url}}"],
+              "path": ["admin", "users"],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "1"
+                },
+                {
+                  "key": "limit",
+                  "value": "10"
+                },
+                {
+                  "key": "search",
+                  "value": ""
+                },
+                {
+                  "key": "role",
+                  "value": ""
+                }
+              ]
+            },
+            "description": "Get paginated list of users with optional search and role filter"
+          },
+          "response": []
+        },
+        {
+          "name": "Get User by ID",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/admin/users/:id",
+              "host": ["{{base_url}}"],
+              "path": ["admin", "users", ":id"],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "1"
+                }
+              ]
+            },
+            "description": "Get single user by ID"
+          },
+          "response": []
+        },
+        {
+          "name": "Create User",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Ahmad Dahlan\",\n  \"email\": \"ahmad.dahlan@lpmaarif.nu.or.id\",\n  \"password\": \"password123\",\n  \"password_confirmation\": \"password123\",\n  \"role\": \"editor\",\n  \"status\": \"active\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/admin/users",
+              "host": ["{{base_url}}"],
+              "path": ["admin", "users"]
+            },
+            "description": "Create a new user account"
+          },
+          "response": []
+        },
+        {
+          "name": "Update User",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Ahmad Dahlan Updated\",\n  \"email\": \"ahmad.dahlan@lpmaarif.nu.or.id\",\n  \"role\": \"admin\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/admin/users/:id",
+              "host": ["{{base_url}}"],
+              "path": ["admin", "users", ":id"],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "1"
+                }
+              ]
+            },
+            "description": "Update user information"
+          },
+          "response": []
+        },
+        {
+          "name": "Update User Status",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"status\": \"inactive\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/admin/users/:id/status",
+              "host": ["{{base_url}}"],
+              "path": ["admin", "users", ":id", "status"],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "1"
+                }
+              ]
+            },
+            "description": "Update user status (active/inactive)"
+          },
+          "response": []
+        },
+        {
+          "name": "Delete User",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/admin/users/:id",
+              "host": ["{{base_url}}"],
+              "path": ["admin", "users", ":id"],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "1"
+                }
+              ]
+            },
+            "description": "Delete user by ID"
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "News",
+      "item": [
+        {
+          "name": "Get All News",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/admin/news?page=1&limit=10&search=&status=&category_id=&is_featured=",
+              "host": ["{{base_url}}"],
+              "path": ["admin", "news"],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "1"
+                },
+                {
+                  "key": "limit",
+                  "value": "10"
+                },
+                {
+                  "key": "search",
+                  "value": ""
+                },
+                {
+                  "key": "status",
+                  "value": ""
+                },
+                {
+                  "key": "category_id",
+                  "value": ""
+                },
+                {
+                  "key": "is_featured",
+                  "value": ""
+                }
+              ]
+            },
+            "description": "Get paginated list of news articles with filters"
+          },
+          "response": []
+        },
+        {
+          "name": "Get News by ID",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/admin/news/:id",
+              "host": ["{{base_url}}"],
+              "path": ["admin", "news", ":id"],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "1"
+                }
+              ]
+            },
+            "description": "Get single news article by ID"
+          },
+          "response": []
+        },
+        {
+          "name": "Create News",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Peluncuran Program Pendidikan Karakter di Sekolah Ma'arif NU\",\n  \"slug\": \"peluncuran-program-pendidikan-karakter-di-sekolah-maarif-nu\",\n  \"excerpt\": \"LP Ma'arif NU meluncurkan program pendidikan karakter yang akan diterapkan di seluruh sekolah Ma'arif NU di Indonesia\",\n  \"content\": \"<p>Jakarta - Lembaga Pendidikan Ma'arif Nahdlatul Ulama (LP Ma'arif NU) resmi meluncurkan program pendidikan karakter yang akan diterapkan di seluruh sekolah Ma'arif NU di Indonesia. Program ini bertujuan untuk memperkuat nilai-nilai kebangsaan dan keagamaan pada peserta didik.</p><p>Ketua Umum LP Ma'arif NU menyampaikan bahwa program ini merupakan bagian dari upaya meningkatkan kualitas pendidikan di lingkungan Ma'arif NU. Program pendidikan karakter ini akan mengintegrasikan nilai-nilai Aswaja An-Nahdliyah dalam proses pembelajaran.</p>\",\n  \"featured_image\": \"https://cdn.lpmaarif.nu.or.id/images/news/pendidikan-karakter.jpg\",\n  \"category_id\": 1,\n  \"tags\": [1, 2, 3],\n  \"status\": \"draft\",\n  \"is_featured\": false,\n  \"meta_title\": \"Peluncuran Program Pendidikan Karakter di Sekolah Ma'arif NU\",\n  \"meta_description\": \"LP Ma'arif NU meluncurkan program pendidikan karakter untuk memperkuat nilai-nilai kebangsaan dan keagamaan\",\n  \"meta_keywords\": \"pendidikan karakter, ma'arif nu, pendidikan islam, nahdlatul ulama\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/admin/news",
+              "host": ["{{base_url}}"],
+              "path": ["admin", "news"]
+            },
+            "description": "Create a new news article"
+          },
+          "response": []
+        },
+        {
+          "name": "Update News",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Peluncuran Program Pendidikan Karakter di Sekolah Ma'arif NU (Updated)\",\n  \"slug\": \"peluncuran-program-pendidikan-karakter-di-sekolah-maarif-nu\",\n  \"excerpt\": \"LP Ma'arif NU meluncurkan program pendidikan karakter yang akan diterapkan di seluruh sekolah Ma'arif NU di Indonesia\",\n  \"content\": \"<p>Jakarta - Lembaga Pendidikan Ma'arif Nahdlatul Ulama (LP Ma'arif NU) resmi meluncurkan program pendidikan karakter yang akan diterapkan di seluruh sekolah Ma'arif NU di Indonesia. Program ini bertujuan untuk memperkuat nilai-nilai kebangsaan dan keagamaan pada peserta didik.</p><p>Ketua Umum LP Ma'arif NU menyampaikan bahwa program ini merupakan bagian dari upaya meningkatkan kualitas pendidikan di lingkungan Ma'arif NU. Program pendidikan karakter ini akan mengintegrasikan nilai-nilai Aswaja An-Nahdliyah dalam proses pembelajaran.</p>\",\n  \"featured_image\": \"https://cdn.lpmaarif.nu.or.id/images/news/pendidikan-karakter.jpg\",\n  \"category_id\": 1,\n  \"tags\": [1, 2, 3],\n  \"is_featured\": true\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/admin/news/:id",
+              "host": ["{{base_url}}"],
+              "path": ["admin", "news", ":id"],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "1"
+                }
+              ]
+            },
+            "description": "Update news article"
+          },
+          "response": []
+        },
+        {
+          "name": "Publish News",
+          "request": {
+            "method": "PATCH",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/admin/news/:id/publish",
+              "host": ["{{base_url}}"],
+              "path": ["admin", "news", ":id", "publish"],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "1"
+                }
+              ]
+            },
+            "description": "Publish news article"
+          },
+          "response": []
+        },
+        {
+          "name": "Archive News",
+          "request": {
+            "method": "PATCH",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/admin/news/:id/archive",
+              "host": ["{{base_url}}"],
+              "path": ["admin", "news", ":id", "archive"],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "1"
+                }
+              ]
+            },
+            "description": "Archive news article"
+          },
+          "response": []
+        },
+        {
+          "name": "Toggle Featured News",
+          "request": {
+            "method": "PATCH",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/admin/news/:id/featured",
+              "host": ["{{base_url}}"],
+              "path": ["admin", "news", ":id", "featured"],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "1"
+                }
+              ]
+            },
+            "description": "Toggle featured status of news article"
+          },
+          "response": []
+        },
+        {
+          "name": "Delete News",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/admin/news/:id",
+              "host": ["{{base_url}}"],
+              "path": ["admin", "news", ":id"],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "1"
+                }
+              ]
+            },
+            "description": "Delete news article by ID"
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Opinions",
+      "item": [
+        {
+          "name": "Get All Opinions",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/admin/opinions?page=1&limit=10&search=&status=&category_id=",
+              "host": ["{{base_url}}"],
+              "path": ["admin", "opinions"],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "1"
+                },
+                {
+                  "key": "limit",
+                  "value": "10"
+                },
+                {
+                  "key": "search",
+                  "value": ""
+                },
+                {
+                  "key": "status",
+                  "value": ""
+                },
+                {
+                  "key": "category_id",
+                  "value": ""
+                }
+              ]
+            },
+            "description": "Get paginated list of opinion articles with filters"
+          },
+          "response": []
+        },
+        {
+          "name": "Get Opinion by ID",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/admin/opinions/:id",
+              "host": ["{{base_url}}"],
+              "path": ["admin", "opinions", ":id"],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "1"
+                }
+              ]
+            },
+            "description": "Get single opinion article by ID"
+          },
+          "response": []
+        },
+        {
+          "name": "Create Opinion",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Pentingnya Moderasi Beragama dalam Pendidikan Pesantren\",\n  \"slug\": \"pentingnya-moderasi-beragama-dalam-pendidikan-pesantren\",\n  \"excerpt\": \"Moderasi beragama harus menjadi landasan dalam sistem pendidikan pesantren untuk menciptakan generasi yang toleran dan inklusif\",\n  \"content\": \"<p>Moderasi beragama atau wasathiyah merupakan nilai fundamental dalam ajaran Islam yang harus ditanamkan sejak dini. Dalam konteks pendidikan pesantren, moderasi beragama tidak hanya menjadi materi pembelajaran, tetapi harus menjadi ruh dalam setiap aspek kehidupan santri.</p><p>Pesantren sebagai lembaga pendidikan Islam tradisional memiliki peran strategis dalam membentuk karakter santri yang moderat, toleran, dan menghargai keberagaman. Nilai-nilai Aswaja An-Nahdliyah yang diajarkan di pesantren menjadi fondasi kuat dalam mewujudkan moderasi beragama.</p>\",\n  \"author_name\": \"KH. Abdullah Syukri Zarkasyi\",\n  \"author_title\": \"Pengasuh Pondok Pesantren Gontor\",\n  \"author_bio\": \"Kiai Abdullah Syukri Zarkasyi adalah pengasuh Pondok Modern Darussalam Gontor dan aktif dalam pengembangan pendidikan Islam di Indonesia.\",\n  \"author_photo\": \"https://cdn.lpmaarif.nu.or.id/images/authors/kh-abdullah-syukri.jpg\",\n  \"featured_image\": \"https://cdn.lpmaarif.nu.or.id/images/opinions/moderasi-beragama.jpg\",\n  \"category_id\": 2,\n  \"tags\": [4, 5, 6],\n  \"status\": \"draft\",\n  \"meta_title\": \"Pentingnya Moderasi Beragama dalam Pendidikan Pesantren\",\n  \"meta_description\": \"Moderasi beragama sebagai landasan pendidikan pesantren untuk menciptakan generasi toleran\",\n  \"meta_keywords\": \"moderasi beragama, pesantren, pendidikan islam, wasathiyah\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/admin/opinions",
+              "host": ["{{base_url}}"],
+              "path": ["admin", "opinions"]
+            },
+            "description": "Create a new opinion article"
+          },
+          "response": []
+        },
+        {
+          "name": "Update Opinion",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Pentingnya Moderasi Beragama dalam Pendidikan Pesantren (Updated)\",\n  \"slug\": \"pentingnya-moderasi-beragama-dalam-pendidikan-pesantren\",\n  \"excerpt\": \"Moderasi beragama harus menjadi landasan dalam sistem pendidikan pesantren untuk menciptakan generasi yang toleran dan inklusif\",\n  \"content\": \"<p>Moderasi beragama atau wasathiyah merupakan nilai fundamental dalam ajaran Islam yang harus ditanamkan sejak dini. Dalam konteks pendidikan pesantren, moderasi beragama tidak hanya menjadi materi pembelajaran, tetapi harus menjadi ruh dalam setiap aspek kehidupan santri.</p><p>Pesantren sebagai lembaga pendidikan Islam tradisional memiliki peran strategis dalam membentuk karakter santri yang moderat, toleran, dan menghargai keberagaman. Nilai-nilai Aswaja An-Nahdliyah yang diajarkan di pesantren menjadi fondasi kuat dalam mewujudkan moderasi beragama.</p>\",\n  \"author_name\": \"KH. Abdullah Syukri Zarkasyi\",\n  \"author_title\": \"Pengasuh Pondok Pesantren Gontor\",\n  \"author_bio\": \"Kiai Abdullah Syukri Zarkasyi adalah pengasuh Pondok Modern Darussalam Gontor dan aktif dalam pengembangan pendidikan Islam di Indonesia.\",\n  \"author_photo\": \"https://cdn.lpmaarif.nu.or.id/images/authors/kh-abdullah-syukri.jpg\",\n  \"featured_image\": \"https://cdn.lpmaarif.nu.or.id/images/opinions/moderasi-beragama.jpg\",\n  \"category_id\": 2,\n  \"tags\": [4, 5, 6]\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/admin/opinions/:id",
+              "host": ["{{base_url}}"],
+              "path": ["admin", "opinions", ":id"],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "1"
+                }
+              ]
+            },
+            "description": "Update opinion article"
+          },
+          "response": []
+        },
+        {
+          "name": "Publish Opinion",
+          "request": {
+            "method": "PATCH",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/admin/opinions/:id/publish",
+              "host": ["{{base_url}}"],
+              "path": ["admin", "opinions", ":id", "publish"],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "1"
+                }
+              ]
+            },
+            "description": "Publish opinion article"
+          },
+          "response": []
+        },
+        {
+          "name": "Delete Opinion",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/admin/opinions/:id",
+              "host": ["{{base_url}}"],
+              "path": ["admin", "opinions", ":id"],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "1"
+                }
+              ]
+            },
+            "description": "Delete opinion article by ID"
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Documents",
+      "item": [
+        {
+          "name": "Get All Documents",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/admin/documents?page=1&limit=10&search=&category_id=",
+              "host": ["{{base_url}}"],
+              "path": ["admin", "documents"],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "1"
+                },
+                {
+                  "key": "limit",
+                  "value": "10"
+                },
+                {
+                  "key": "search",
+                  "value": ""
+                },
+                {
+                  "key": "category_id",
+                  "value": ""
+                }
+              ]
+            },
+            "description": "Get paginated list of documents with filters"
+          },
+          "response": []
+        },
+        {
+          "name": "Get Document by ID",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/admin/documents/:id",
+              "host": ["{{base_url}}"],
+              "path": ["admin", "documents", ":id"],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "1"
+                }
+              ]
+            },
+            "description": "Get single document by ID"
+          },
+          "response": []
+        },
+        {
+          "name": "Get Document Stats",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/admin/documents/:id/stats",
+              "host": ["{{base_url}}"],
+              "path": ["admin", "documents", ":id", "stats"],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "1"
+                }
+              ]
+            },
+            "description": "Get document statistics (views, downloads, etc.)"
+          },
+          "response": []
+        },
+        {
+          "name": "Create Document",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "multipart/form-data",
+                "disabled": true
+              }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "title",
+                  "value": "Pedoman Kurikulum Ma'arif NU 2024",
+                  "type": "text"
+                },
+                {
+                  "key": "description",
+                  "value": "Pedoman kurikulum untuk sekolah-sekolah di bawah naungan LP Ma'arif NU tahun 2024",
+                  "type": "text"
+                },
+                {
+                  "key": "category_id",
+                  "value": "1",
+                  "type": "text"
+                },
+                {
+                  "key": "file",
+                  "type": "file",
+                  "src": []
+                },
+                {
+                  "key": "tags",
+                  "value": "[1, 2, 3]",
+                  "type": "text"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{base_url}}/admin/documents",
+              "host": ["{{base_url}}"],
+              "path": ["admin", "documents"]
+            },
+            "description": "Upload a new document"
+          },
+          "response": []
+        },
+        {
+          "name": "Replace Document File",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "multipart/form-data",
+                "disabled": true
+              }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "file",
+                  "type": "file",
+                  "src": []
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{base_url}}/admin/documents/:id/file",
+              "host": ["{{base_url}}"],
+              "path": ["admin", "documents", ":id", "file"],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "1"
+                }
+              ]
+            },
+            "description": "Replace existing document file"
+          },
+          "response": []
+        },
+        {
+          "name": "Delete Document",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/admin/documents/:id",
+              "host": ["{{base_url}}"],
+              "path": ["admin", "documents", ":id"],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "1"
+                }
+              ]
+            },
+            "description": "Delete document by ID"
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Categories",
+      "item": [
+        {
+          "name": "Get All Categories",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/admin/categories",
+              "host": ["{{base_url}}"],
+              "path": ["admin", "categories"]
+            },
+            "description": "Get all categories"
+          },
+          "response": []
+        },
+        {
+          "name": "Create Category",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Pendidikan\",\n  \"slug\": \"pendidikan\",\n  \"description\": \"Kategori untuk artikel tentang pendidikan\",\n  \"type\": \"news\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/admin/categories",
+              "host": ["{{base_url}}"],
+              "path": ["admin", "categories"]
+            },
+            "description": "Create a new category"
+          },
+          "response": []
+        },
+        {
+          "name": "Update Category",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Pendidikan Islam\",\n  \"slug\": \"pendidikan-islam\",\n  \"description\": \"Kategori untuk artikel tentang pendidikan Islam\",\n  \"type\": \"news\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/admin/categories/:id",
+              "host": ["{{base_url}}"],
+              "path": ["admin", "categories", ":id"],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "1"
+                }
+              ]
+            },
+            "description": "Update category"
+          },
+          "response": []
+        },
+        {
+          "name": "Delete Category",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/admin/categories/:id",
+              "host": ["{{base_url}}"],
+              "path": ["admin", "categories", ":id"],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "1"
+                }
+              ]
+            },
+            "description": "Delete category by ID"
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Tags",
+      "item": [
+        {
+          "name": "Get All Tags",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/admin/tags",
+              "host": ["{{base_url}}"],
+              "path": ["admin", "tags"]
+            },
+            "description": "Get all tags"
+          },
+          "response": []
+        },
+        {
+          "name": "Create Tag",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Pesantren\",\n  \"slug\": \"pesantren\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/admin/tags",
+              "host": ["{{base_url}}"],
+              "path": ["admin", "tags"]
+            },
+            "description": "Create a new tag"
+          },
+          "response": []
+        },
+        {
+          "name": "Update Tag",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Pondok Pesantren\",\n  \"slug\": \"pondok-pesantren\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/admin/tags/:id",
+              "host": ["{{base_url}}"],
+              "path": ["admin", "tags", ":id"],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "1"
+                }
+              ]
+            },
+            "description": "Update tag"
+          },
+          "response": []
+        },
+        {
+          "name": "Delete Tag",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/admin/tags/:id",
+              "host": ["{{base_url}}"],
+              "path": ["admin", "tags", ":id"],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "1"
+                }
+              ]
+            },
+            "description": "Delete tag by ID"
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Hero Slides",
+      "item": [
+        {
+          "name": "Get All Hero Slides",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/admin/hero-slides",
+              "host": ["{{base_url}}"],
+              "path": ["admin", "hero-slides"]
+            },
+            "description": "Get all hero slides ordered by position"
+          },
+          "response": []
+        },
+        {
+          "name": "Get Hero Slide by ID",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/admin/hero-slides/:id",
+              "host": ["{{base_url}}"],
+              "path": ["admin", "hero-slides", ":id"],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "1"
+                }
+              ]
+            },
+            "description": "Get single hero slide by ID"
+          },
+          "response": []
+        },
+        {
+          "name": "Create Hero Slide",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Selamat Datang di LP Ma'arif NU\",\n  \"subtitle\": \"Lembaga Pendidikan Terpercaya untuk Generasi Berakhlak Mulia\",\n  \"description\": \"LP Ma'arif NU berkomitmen mengembangkan pendidikan berkualitas yang mengintegrasikan nilai-nilai Islam Ahlussunnah wal Jamaah\",\n  \"image\": \"https://cdn.lpmaarif.nu.or.id/images/slides/hero-1.jpg\",\n  \"button_text\": \"Selengkapnya\",\n  \"button_link\": \"/tentang-kami\",\n  \"position\": 1,\n  \"is_active\": true\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/admin/hero-slides",
+              "host": ["{{base_url}}"],
+              "path": ["admin", "hero-slides"]
+            },
+            "description": "Create a new hero slide"
+          },
+          "response": []
+        },
+        {
+          "name": "Update Hero Slide",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Selamat Datang di LP Ma'arif NU (Updated)\",\n  \"subtitle\": \"Lembaga Pendidikan Terpercaya untuk Generasi Berakhlak Mulia\",\n  \"description\": \"LP Ma'arif NU berkomitmen mengembangkan pendidikan berkualitas yang mengintegrasikan nilai-nilai Islam Ahlussunnah wal Jamaah\",\n  \"image\": \"https://cdn.lpmaarif.nu.or.id/images/slides/hero-1-updated.jpg\",\n  \"button_text\": \"Pelajari Lebih Lanjut\",\n  \"button_link\": \"/tentang-kami\",\n  \"is_active\": true\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/admin/hero-slides/:id",
+              "host": ["{{base_url}}"],
+              "path": ["admin", "hero-slides", ":id"],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "1"
+                }
+              ]
+            },
+            "description": "Update hero slide"
+          },
+          "response": []
+        },
+        {
+          "name": "Reorder Hero Slides",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"order\": [3, 1, 2, 4]\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/admin/hero-slides/reorder",
+              "host": ["{{base_url}}"],
+              "path": ["admin", "hero-slides", "reorder"]
+            },
+            "description": "Reorder hero slides positions"
+          },
+          "response": []
+        },
+        {
+          "name": "Delete Hero Slide",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/admin/hero-slides/:id",
+              "host": ["{{base_url}}"],
+              "path": ["admin", "hero-slides", ":id"],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "1"
+                }
+              ]
+            },
+            "description": "Delete hero slide by ID"
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Organization",
+      "item": [
+        {
+          "name": "Positions",
+          "item": [
+            {
+              "name": "Get All Positions",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}/admin/organization/positions",
+                  "host": ["{{base_url}}"],
+                  "path": ["admin", "organization", "positions"]
+                },
+                "description": "Get all organization positions"
+              },
+              "response": []
+            }
+          ]
+        },
+        {
+          "name": "Board Members",
+          "item": [
+            {
+              "name": "Get All Board Members",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}/admin/organization/board-members",
+                  "host": ["{{base_url}}"],
+                  "path": ["admin", "organization", "board-members"]
+                },
+                "description": "Get all board members"
+              },
+              "response": []
+            },
+            {
+              "name": "Create Board Member",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"KH. Dr. Ahmad Zahro\",\n  \"position_id\": 1,\n  \"photo\": \"https://cdn.lpmaarif.nu.or.id/images/board/ahmad-zahro.jpg\",\n  \"bio\": \"Ketua Umum LP Ma'arif NU periode 2022-2027. Aktif dalam pengembangan pendidikan Islam di Indonesia.\",\n  \"order\": 1\n}"
+                },
+                "url": {
+                  "raw": "{{base_url}}/admin/organization/board-members",
+                  "host": ["{{base_url}}"],
+                  "path": ["admin", "organization", "board-members"]
+                },
+                "description": "Create a new board member"
+              },
+              "response": []
+            },
+            {
+              "name": "Update Board Member",
+              "request": {
+                "method": "PUT",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"KH. Dr. Ahmad Zahro, M.A.\",\n  \"position_id\": 1,\n  \"photo\": \"https://cdn.lpmaarif.nu.or.id/images/board/ahmad-zahro-updated.jpg\",\n  \"bio\": \"Ketua Umum LP Ma'arif NU periode 2022-2027. Aktif dalam pengembangan pendidikan Islam di Indonesia dan internasional.\",\n  \"order\": 1\n}"
+                },
+                "url": {
+                  "raw": "{{base_url}}/admin/organization/board-members/:id",
+                  "host": ["{{base_url}}"],
+                  "path": ["admin", "organization", "board-members", ":id"],
+                  "variable": [
+                    {
+                      "key": "id",
+                      "value": "1"
+                    }
+                  ]
+                },
+                "description": "Update board member"
+              },
+              "response": []
+            },
+            {
+              "name": "Delete Board Member",
+              "request": {
+                "method": "DELETE",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}/admin/organization/board-members/:id",
+                  "host": ["{{base_url}}"],
+                  "path": ["admin", "organization", "board-members", ":id"],
+                  "variable": [
+                    {
+                      "key": "id",
+                      "value": "1"
+                    }
+                  ]
+                },
+                "description": "Delete board member by ID"
+              },
+              "response": []
+            }
+          ]
+        },
+        {
+          "name": "Pengurus",
+          "item": [
+            {
+              "name": "Get All Pengurus",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}/admin/organization/pengurus",
+                  "host": ["{{base_url}}"],
+                  "path": ["admin", "organization", "pengurus"]
+                },
+                "description": "Get all pengurus (organizational staff)"
+              },
+              "response": []
+            },
+            {
+              "name": "Get Pengurus by ID",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}/admin/organization/pengurus/:id",
+                  "host": ["{{base_url}}"],
+                  "path": ["admin", "organization", "pengurus", ":id"],
+                  "variable": [
+                    {
+                      "key": "id",
+                      "value": "1"
+                    }
+                  ]
+                },
+                "description": "Get single pengurus by ID"
+              },
+              "response": []
+            },
+            {
+              "name": "Create Pengurus",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"Dr. H. Miftahul Huda, M.Pd.I.\",\n  \"position\": \"Sekretaris Umum\",\n  \"photo\": \"https://cdn.lpmaarif.nu.or.id/images/pengurus/miftahul-huda.jpg\",\n  \"bio\": \"Sekretaris Umum LP Ma'arif NU dengan pengalaman lebih dari 15 tahun di bidang manajemen pendidikan.\",\n  \"order\": 2\n}"
+                },
+                "url": {
+                  "raw": "{{base_url}}/admin/organization/pengurus",
+                  "host": ["{{base_url}}"],
+                  "path": ["admin", "organization", "pengurus"]
+                },
+                "description": "Create a new pengurus"
+              },
+              "response": []
+            },
+            {
+              "name": "Update Pengurus",
+              "request": {
+                "method": "PUT",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"Dr. H. Miftahul Huda, M.Pd.I., M.A.\",\n  \"position\": \"Sekretaris Umum\",\n  \"photo\": \"https://cdn.lpmaarif.nu.or.id/images/pengurus/miftahul-huda-updated.jpg\",\n  \"bio\": \"Sekretaris Umum LP Ma'arif NU dengan pengalaman lebih dari 15 tahun di bidang manajemen pendidikan.\",\n  \"order\": 2\n}"
+                },
+                "url": {
+                  "raw": "{{base_url}}/admin/organization/pengurus/:id",
+                  "host": ["{{base_url}}"],
+                  "path": ["admin", "organization", "pengurus", ":id"],
+                  "variable": [
+                    {
+                      "key": "id",
+                      "value": "1"
+                    }
+                  ]
+                },
+                "description": "Update pengurus"
+              },
+              "response": []
+            },
+            {
+              "name": "Reorder Pengurus",
+              "request": {
+                "method": "PUT",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"order\": [2, 1, 3, 4, 5]\n}"
+                },
+                "url": {
+                  "raw": "{{base_url}}/admin/organization/pengurus/reorder",
+                  "host": ["{{base_url}}"],
+                  "path": ["admin", "organization", "pengurus", "reorder"]
+                },
+                "description": "Reorder pengurus positions"
+              },
+              "response": []
+            },
+            {
+              "name": "Delete Pengurus",
+              "request": {
+                "method": "DELETE",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}/admin/organization/pengurus/:id",
+                  "host": ["{{base_url}}"],
+                  "path": ["admin", "organization", "pengurus", ":id"],
+                  "variable": [
+                    {
+                      "key": "id",
+                      "value": "1"
+                    }
+                  ]
+                },
+                "description": "Delete pengurus by ID"
+              },
+              "response": []
+            }
+          ]
+        },
+        {
+          "name": "Departments",
+          "item": [
+            {
+              "name": "Get All Departments",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}/admin/organization/departments",
+                  "host": ["{{base_url}}"],
+                  "path": ["admin", "organization", "departments"]
+                },
+                "description": "Get all departments"
+              },
+              "response": []
+            },
+            {
+              "name": "Update Department",
+              "request": {
+                "method": "PUT",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"Departemen Pendidikan Dasar dan Menengah\",\n  \"description\": \"Mengelola dan mengembangkan pendidikan dasar dan menengah di lingkungan Ma'arif NU\",\n  \"head_name\": \"Dr. H. Abdul Manan, M.Pd.\",\n  \"head_photo\": \"https://cdn.lpmaarif.nu.or.id/images/departments/abdul-manan.jpg\"\n}"
+                },
+                "url": {
+                  "raw": "{{base_url}}/admin/organization/departments/:id",
+                  "host": ["{{base_url}}"],
+                  "path": ["admin", "organization", "departments", ":id"],
+                  "variable": [
+                    {
+                      "key": "id",
+                      "value": "1"
+                    }
+                  ]
+                },
+                "description": "Update department information"
+              },
+              "response": []
+            }
+          ]
+        },
+        {
+          "name": "Editorial Team",
+          "item": [
+            {
+              "name": "Get Editorial Team",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}/admin/organization/editorial-team",
+                  "host": ["{{base_url}}"],
+                  "path": ["admin", "organization", "editorial-team"]
+                },
+                "description": "Get all editorial team members"
+              },
+              "response": []
+            },
+            {
+              "name": "Update Editorial Team Member",
+              "request": {
+                "method": "PUT",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"Dr. Siti Nurjanah, M.A.\",\n  \"position\": \"Pemimpin Redaksi\",\n  \"photo\": \"https://cdn.lpmaarif.nu.or.id/images/editorial/siti-nurjanah.jpg\",\n  \"bio\": \"Doktor di bidang Komunikasi Massa dengan spesialisasi jurnalisme pendidikan\"\n}"
+                },
+                "url": {
+                  "raw": "{{base_url}}/admin/organization/editorial-team/:id",
+                  "host": ["{{base_url}}"],
+                  "path": ["admin", "organization", "editorial-team", ":id"],
+                  "variable": [
+                    {
+                      "key": "id",
+                      "value": "1"
+                    }
+                  ]
+                },
+                "description": "Update editorial team member"
+              },
+              "response": []
+            }
+          ]
+        },
+        {
+          "name": "Editorial Council",
+          "item": [
+            {
+              "name": "Get Editorial Council",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}/admin/organization/editorial-council",
+                  "host": ["{{base_url}}"],
+                  "path": ["admin", "organization", "editorial-council"]
+                },
+                "description": "Get all editorial council members"
+              },
+              "response": []
+            },
+            {
+              "name": "Update Editorial Council Member",
+              "request": {
+                "method": "PUT",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"Prof. Dr. H. Azyumardi Azra, CBE\",\n  \"position\": \"Dewan Redaksi\",\n  \"photo\": \"https://cdn.lpmaarif.nu.or.id/images/council/azyumardi-azra.jpg\",\n  \"bio\": \"Guru Besar Emeritus Sejarah dan Peradaban Islam di Universitas Islam Negeri Syarif Hidayatullah Jakarta\"\n}"
+                },
+                "url": {
+                  "raw": "{{base_url}}/admin/organization/editorial-council/:id",
+                  "host": ["{{base_url}}"],
+                  "path": ["admin", "organization", "editorial-council", ":id"],
+                  "variable": [
+                    {
+                      "key": "id",
+                      "value": "1"
+                    }
+                  ]
+                },
+                "description": "Update editorial council member"
+              },
+              "response": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Pages",
+      "item": [
+        {
+          "name": "Get All Pages",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/admin/pages",
+              "host": ["{{base_url}}"],
+              "path": ["admin", "pages"]
+            },
+            "description": "Get all pages"
+          },
+          "response": []
+        },
+        {
+          "name": "Get Page by Slug",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/admin/pages/:slug",
+              "host": ["{{base_url}}"],
+              "path": ["admin", "pages", ":slug"],
+              "variable": [
+                {
+                  "key": "slug",
+                  "value": "tentang-kami"
+                }
+              ]
+            },
+            "description": "Get single page by slug"
+          },
+          "response": []
+        },
+        {
+          "name": "Update Page",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Tentang Kami\",\n  \"content\": \"<h1>Tentang LP Ma'arif NU</h1><p>Lembaga Pendidikan Ma'arif Nahdlatul Ulama (LP Ma'arif NU) adalah lembaga pendidikan terbesar di Indonesia yang mengelola ribuan sekolah dari tingkat dasar hingga perguruan tinggi.</p><h2>Sejarah</h2><p>LP Ma'arif NU didirikan pada tahun 1926 bersamaan dengan berdirinya Nahdlatul Ulama. Sejak awal, LP Ma'arif NU memiliki visi untuk mengembangkan pendidikan Islam yang moderat dan berkualitas.</p><h2>Visi dan Misi</h2><p><strong>Visi:</strong> Menjadi lembaga pendidikan Islam terkemuka yang menghasilkan generasi berakhlak mulia, cerdas, dan berwawasan kebangsaan.</p><p><strong>Misi:</strong></p><ul><li>Menyelenggarakan pendidikan berkualitas yang mengintegrasikan nilai-nilai Islam Ahlussunnah wal Jamaah</li><li>Mengembangkan kurikulum yang relevan dengan kebutuhan zaman</li><li>Mencetak kader-kader pemimpin yang berkarakter</li></ul>\",\n  \"meta_title\": \"Tentang LP Ma'arif NU - Lembaga Pendidikan Terbesar di Indonesia\",\n  \"meta_description\": \"LP Ma'arif NU adalah lembaga pendidikan Islam terbesar di Indonesia dengan ribuan sekolah dari tingkat dasar hingga perguruan tinggi\",\n  \"meta_keywords\": \"lp ma'arif nu, tentang ma'arif, pendidikan islam, nahdlatul ulama\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/admin/pages/:slug",
+              "host": ["{{base_url}}"],
+              "path": ["admin", "pages", ":slug"],
+              "variable": [
+                {
+                  "key": "slug",
+                  "value": "tentang-kami"
+                }
+              ]
+            },
+            "description": "Update page content"
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Event Flyers",
+      "item": [
+        {
+          "name": "Get All Event Flyers",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/admin/event-flyers?page=1&limit=10",
+              "host": ["{{base_url}}"],
+              "path": ["admin", "event-flyers"],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "1"
+                },
+                {
+                  "key": "limit",
+                  "value": "10"
+                }
+              ]
+            },
+            "description": "Get paginated list of event flyers"
+          },
+          "response": []
+        },
+        {
+          "name": "Get Event Flyer by ID",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/admin/event-flyers/:id",
+              "host": ["{{base_url}}"],
+              "path": ["admin", "event-flyers", ":id"],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "1"
+                }
+              ]
+            },
+            "description": "Get single event flyer by ID"
+          },
+          "response": []
+        },
+        {
+          "name": "Create Event Flyer",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "multipart/form-data",
+                "disabled": true
+              }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "title",
+                  "value": "Muktamar LP Ma'arif NU 2024",
+                  "type": "text"
+                },
+                {
+                  "key": "description",
+                  "value": "Muktamar LP Ma'arif NU tahun 2024 akan diselenggarakan di Jakarta Convention Center",
+                  "type": "text"
+                },
+                {
+                  "key": "event_date",
+                  "value": "2024-08-15",
+                  "type": "text"
+                },
+                {
+                  "key": "location",
+                  "value": "Jakarta Convention Center",
+                  "type": "text"
+                },
+                {
+                  "key": "image",
+                  "type": "file",
+                  "src": []
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{base_url}}/admin/event-flyers",
+              "host": ["{{base_url}}"],
+              "path": ["admin", "event-flyers"]
+            },
+            "description": "Upload a new event flyer"
+          },
+          "response": []
+        },
+        {
+          "name": "Delete Event Flyer",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/admin/event-flyers/:id",
+              "host": ["{{base_url}}"],
+              "path": ["admin", "event-flyers", ":id"],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "1"
+                }
+              ]
+            },
+            "description": "Delete event flyer by ID"
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Media",
+      "item": [
+        {
+          "name": "Get All Media",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/admin/media?page=1&limit=20&type=",
+              "host": ["{{base_url}}"],
+              "path": ["admin", "media"],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "1"
+                },
+                {
+                  "key": "limit",
+                  "value": "20"
+                },
+                {
+                  "key": "type",
+                  "value": ""
+                }
+              ]
+            },
+            "description": "Get paginated list of media files with optional type filter"
+          },
+          "response": []
+        },
+        {
+          "name": "Upload Media",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "multipart/form-data",
+                "disabled": true
+              }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "file",
+                  "type": "file",
+                  "src": []
+                },
+                {
+                  "key": "alt_text",
+                  "value": "Logo LP Ma'arif NU",
+                  "type": "text"
+                },
+                {
+                  "key": "caption",
+                  "value": "Logo resmi Lembaga Pendidikan Ma'arif Nahdlatul Ulama",
+                  "type": "text"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{base_url}}/admin/media/upload",
+              "host": ["{{base_url}}"],
+              "path": ["admin", "media", "upload"]
+            },
+            "description": "Upload a new media file (image, video, document)"
+          },
+          "response": []
+        },
+        {
+          "name": "Delete Media",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/admin/media/:id",
+              "host": ["{{base_url}}"],
+              "path": ["admin", "media", ":id"],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "1"
+                }
+              ]
+            },
+            "description": "Delete media file by ID"
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Contact Messages",
+      "item": [
+        {
+          "name": "Get All Contact Messages",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/admin/contact-messages?page=1&limit=10&status=",
+              "host": ["{{base_url}}"],
+              "path": ["admin", "contact-messages"],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "1"
+                },
+                {
+                  "key": "limit",
+                  "value": "10"
+                },
+                {
+                  "key": "status",
+                  "value": ""
+                }
+              ]
+            },
+            "description": "Get paginated list of contact messages with optional status filter"
+          },
+          "response": []
+        },
+        {
+          "name": "Get Contact Message by ID",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/admin/contact-messages/:id",
+              "host": ["{{base_url}}"],
+              "path": ["admin", "contact-messages", ":id"],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "1"
+                }
+              ]
+            },
+            "description": "Get single contact message by ID"
+          },
+          "response": []
+        },
+        {
+          "name": "Update Contact Message Status",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"status\": \"read\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/admin/contact-messages/:id/status",
+              "host": ["{{base_url}}"],
+              "path": ["admin", "contact-messages", ":id", "status"],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "1"
+                }
+              ]
+            },
+            "description": "Update contact message status (unread, read, replied)"
+          },
+          "response": []
+        },
+        {
+          "name": "Delete Contact Message",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/admin/contact-messages/:id",
+              "host": ["{{base_url}}"],
+              "path": ["admin", "contact-messages", ":id"],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "1"
+                }
+              ]
+            },
+            "description": "Delete contact message by ID"
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Settings",
+      "item": [
+        {
+          "name": "Get All Settings",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/admin/settings",
+              "host": ["{{base_url}}"],
+              "path": ["admin", "settings"]
+            },
+            "description": "Get all application settings"
+          },
+          "response": []
+        },
+        {
+          "name": "Update Settings",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"site_name\": \"LP Ma'arif NU\",\n  \"site_description\": \"Lembaga Pendidikan Ma'arif Nahdlatul Ulama\",\n  \"site_logo\": \"https://cdn.lpmaarif.nu.or.id/images/logo.png\",\n  \"site_favicon\": \"https://cdn.lpmaarif.nu.or.id/images/favicon.ico\",\n  \"contact_email\": \"info@lpmaarif.nu.or.id\",\n  \"contact_phone\": \"+62 21 1234567\",\n  \"contact_address\": \"Jl. Kramat Raya No.164, Jakarta Pusat 10430\",\n  \"social_facebook\": \"https://facebook.com/lpmaarifnu\",\n  \"social_twitter\": \"https://twitter.com/lpmaarifnu\",\n  \"social_instagram\": \"https://instagram.com/lpmaarifnu\",\n  \"social_youtube\": \"https://youtube.com/@lpmaarifnu\",\n  \"meta_keywords\": \"lp ma'arif nu, pendidikan islam, nahdlatul ulama, sekolah islam\",\n  \"meta_description\": \"Lembaga Pendidikan Ma'arif NU - Lembaga pendidikan Islam terbesar di Indonesia\",\n  \"google_analytics_id\": \"UA-XXXXXXXXX-X\",\n  \"items_per_page\": 10,\n  \"maintenance_mode\": false\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/admin/settings",
+              "host": ["{{base_url}}"],
+              "path": ["admin", "settings"]
+            },
+            "description": "Update application settings"
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Activity Logs",
+      "item": [
+        {
+          "name": "Get All Activity Logs",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/admin/activity-logs?page=1&limit=20&user_id=&action=&resource=",
+              "host": ["{{base_url}}"],
+              "path": ["admin", "activity-logs"],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "1"
+                },
+                {
+                  "key": "limit",
+                  "value": "20"
+                },
+                {
+                  "key": "user_id",
+                  "value": ""
+                },
+                {
+                  "key": "action",
+                  "value": ""
+                },
+                {
+                  "key": "resource",
+                  "value": ""
+                }
+              ]
+            },
+            "description": "Get paginated activity logs with filters for user, action, and resource type"
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Notifications",
+      "item": [
+        {
+          "name": "Get All Notifications",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/admin/notifications?page=1&limit=20&is_read=",
+              "host": ["{{base_url}}"],
+              "path": ["admin", "notifications"],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "1"
+                },
+                {
+                  "key": "limit",
+                  "value": "20"
+                },
+                {
+                  "key": "is_read",
+                  "value": ""
+                }
+              ]
+            },
+            "description": "Get paginated list of notifications for current user"
+          },
+          "response": []
+        },
+        {
+          "name": "Mark Notification as Read",
+          "request": {
+            "method": "PATCH",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/admin/notifications/:id/read",
+              "host": ["{{base_url}}"],
+              "path": ["admin", "notifications", ":id", "read"],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "1"
+                }
+              ]
+            },
+            "description": "Mark a single notification as read"
+          },
+          "response": []
+        },
+        {
+          "name": "Mark All Notifications as Read",
+          "request": {
+            "method": "PATCH",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/admin/notifications/read-all",
+              "host": ["{{base_url}}"],
+              "path": ["admin", "notifications", "read-all"]
+            },
+            "description": "Mark all notifications as read for current user"
+          },
+          "response": []
+        },
+        {
+          "name": "Delete Notification",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/admin/notifications/:id",
+              "host": ["{{base_url}}"],
+              "path": ["admin", "notifications", ":id"],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "1"
+                }
+              ]
+            },
+            "description": "Delete notification by ID"
+          },
+          "response": []
+        }
+      ]
+    }
+  ],
+  "variable": [
+    {
+      "key": "base_url",
+      "value": "http://localhost:3000/api/v1",
+      "type": "string"
+    },
+    {
+      "key": "access_token",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "refresh_token",
+      "value": "",
+      "type": "string"
+    }
+  ]
+}

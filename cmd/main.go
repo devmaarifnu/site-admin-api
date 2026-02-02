@@ -54,6 +54,10 @@ func main() {
 	heroSlideRepo := repositories.NewHeroSlideRepository(db)
 	orgPositionRepo := repositories.NewOrganizationPositionRepository(db)
 	boardMemberRepo := repositories.NewBoardMemberRepository(db)
+	pengurusRepo := repositories.NewPengurusRepository(db)
+	departmentRepo := repositories.NewDepartmentRepository(db)
+	editorialTeamRepo := repositories.NewEditorialTeamRepository(db)
+	editorialCouncilRepo := repositories.NewEditorialCouncilRepository(db)
 	pageRepo := repositories.NewPageRepository(db)
 	eventFlyerRepo := repositories.NewEventFlyerRepository(db)
 	mediaRepo := repositories.NewMediaRepository(db)
@@ -73,6 +77,10 @@ func main() {
 	heroSlideService := services.NewHeroSlideService(heroSlideRepo, cfg)
 	orgPositionService := services.NewOrganizationPositionService(orgPositionRepo, cfg)
 	boardMemberService := services.NewBoardMemberService(boardMemberRepo, cfg)
+	pengurusService := services.NewPengurusService(pengurusRepo, cfg)
+	departmentService := services.NewDepartmentService(departmentRepo, cfg)
+	editorialTeamService := services.NewEditorialTeamService(editorialTeamRepo, cfg)
+	editorialCouncilService := services.NewEditorialCouncilService(editorialCouncilRepo, cfg)
 	pageService := services.NewPageService(pageRepo, cfg)
 	eventFlyerService := services.NewEventFlyerService(eventFlyerRepo, cfg)
 	mediaService := services.NewMediaService(mediaRepo, cfg)
@@ -88,7 +96,14 @@ func main() {
 	opinionHandler := handlers.NewOpinionHandler(opinionService)
 	documentHandler := handlers.NewDocumentHandler(documentService)
 	heroSlideHandler := handlers.NewHeroSlideHandler(heroSlideService)
-	organizationHandler := handlers.NewOrganizationHandler(orgPositionService, boardMemberService)
+	organizationHandler := handlers.NewOrganizationHandler(
+		orgPositionService,
+		boardMemberService,
+		pengurusService,
+		departmentService,
+		editorialTeamService,
+		editorialCouncilService,
+	)
 	pageHandler := handlers.NewPageHandler(pageService)
 	eventFlyerHandler := handlers.NewEventFlyerHandler(eventFlyerService)
 	mediaHandler := handlers.NewMediaHandler(mediaService)
@@ -103,6 +118,7 @@ func main() {
 	routes.SetupRoutes(
 		router,
 		cfg,
+		authService,
 		authHandler,
 		userHandler,
 		newsHandler,

@@ -4,6 +4,7 @@ import (
 	"site-admin-api/config"
 	"site-admin-api/internal/handlers"
 	"site-admin-api/internal/middlewares"
+	"site-admin-api/internal/services"
 
 	"github.com/gin-gonic/gin"
 )
@@ -12,6 +13,7 @@ import (
 func SetupRoutes(
 	router *gin.Engine,
 	cfg *config.Config,
+	authService services.AuthService,
 	authHandler *handlers.AuthHandler,
 	userHandler *handlers.UserHandler,
 	newsHandler *handlers.NewsHandler,
@@ -42,7 +44,7 @@ func SetupRoutes(
 	api := router.Group("/api/" + cfg.App.APIVersion)
 	{
 		setupAuthRoutes(api, authHandler)
-		setupProtectedRoutes(api, cfg, authHandler, userHandler, newsHandler, opinionHandler,
+		setupProtectedRoutes(api, cfg, authService, authHandler, userHandler, newsHandler, opinionHandler,
 			documentHandler, heroSlideHandler, organizationHandler, pageHandler,
 			eventFlyerHandler, mediaHandler, categoryHandler, tagHandler,
 			contactMessageHandler, settingHandler, activityLogHandler, notificationHandler)
@@ -64,6 +66,7 @@ func setupAuthRoutes(api *gin.RouterGroup, authHandler *handlers.AuthHandler) {
 func setupProtectedRoutes(
 	api *gin.RouterGroup,
 	cfg *config.Config,
+	authService services.AuthService,
 	authHandler *handlers.AuthHandler,
 	userHandler *handlers.UserHandler,
 	newsHandler *handlers.NewsHandler,
@@ -82,7 +85,7 @@ func setupProtectedRoutes(
 	notificationHandler *handlers.NotificationHandler,
 ) {
 	admin := api.Group("/admin")
-	admin.Use(middlewares.AuthMiddleware(cfg))
+	admin.Use(middlewares.AuthMiddleware(cfg, authService))
 	{
 		// Authenticated user routes
 		admin.GET("/auth/me", authHandler.GetCurrentUser)
