@@ -1,19 +1,11 @@
 {
   "info": {
-    "_postman_id": "lpmaarif-admin-api-complete",
+    "_postman_id": "7a6fa045-47f8-4cb8-a90a-b20a0a057f10",
     "name": "LP Ma'arif NU Admin API - Complete",
     "description": "Complete API collection for LP Ma'arif NU Admin Panel",
-    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
-  },
-  "auth": {
-    "type": "bearer",
-    "bearer": [
-      {
-        "key": "token",
-        "value": "{{access_token}}",
-        "type": "string"
-      }
-    ]
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "25570263",
+    "_collection_link": "https://go.postman.co/collection/25570263-7a6fa045-47f8-4cb8-a90a-b20a0a057f10?source=collection_link"
   },
   "item": [
     {
@@ -25,9 +17,15 @@
             "method": "GET",
             "header": [],
             "url": {
-              "raw": "{{base_url}}/../../health",
-              "host": ["{{base_url}}"],
-              "path": ["..", "..", "health"]
+              "raw": "http://localhost:3000/health",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3000",
+              "path": [
+                "health"
+              ]
             },
             "description": "Check if the API is running"
           },
@@ -55,7 +53,9 @@
                   "    }",
                   "}"
                 ],
-                "type": "text/javascript"
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
               }
             }
           ],
@@ -72,12 +72,18 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"email\": \"admin@lpmaarif.nu.or.id\",\n  \"password\": \"password123\"\n}"
+              "raw": "{\n  \"email\": \"admin@lpmaarifnu.or.id\",\n  \"password\": \"password123\"\n}"
             },
             "url": {
               "raw": "{{base_url}}/admin/auth/login",
-              "host": ["{{base_url}}"],
-              "path": ["admin", "auth", "login"]
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "admin",
+                "auth",
+                "login"
+              ]
             },
             "description": "Login with email and password to get access and refresh tokens"
           },
@@ -121,8 +127,14 @@
             },
             "url": {
               "raw": "{{base_url}}/admin/auth/refresh",
-              "host": ["{{base_url}}"],
-              "path": ["admin", "auth", "refresh"]
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "admin",
+                "auth",
+                "refresh"
+              ]
             },
             "description": "Refresh access token using refresh token"
           },
@@ -135,8 +147,14 @@
             "header": [],
             "url": {
               "raw": "{{base_url}}/admin/auth/me",
-              "host": ["{{base_url}}"],
-              "path": ["admin", "auth", "me"]
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "admin",
+                "auth",
+                "me"
+              ]
             },
             "description": "Get current authenticated user information"
           },
@@ -161,8 +179,14 @@
             },
             "url": {
               "raw": "{{base_url}}/admin/auth/forgot-password",
-              "host": ["{{base_url}}"],
-              "path": ["admin", "auth", "forgot-password"]
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "admin",
+                "auth",
+                "forgot-password"
+              ]
             },
             "description": "Request password reset link via email"
           },
@@ -187,8 +211,14 @@
             },
             "url": {
               "raw": "{{base_url}}/admin/auth/reset-password",
-              "host": ["{{base_url}}"],
-              "path": ["admin", "auth", "reset-password"]
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "admin",
+                "auth",
+                "reset-password"
+              ]
             },
             "description": "Reset password using token from email"
           },
@@ -210,8 +240,14 @@
             },
             "url": {
               "raw": "{{base_url}}/admin/auth/change-password",
-              "host": ["{{base_url}}"],
-              "path": ["admin", "auth", "change-password"]
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "admin",
+                "auth",
+                "change-password"
+              ]
             },
             "description": "Change password for authenticated user"
           },
@@ -224,8 +260,14 @@
             "header": [],
             "url": {
               "raw": "{{base_url}}/admin/auth/logout",
-              "host": ["{{base_url}}"],
-              "path": ["admin", "auth", "logout"]
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "admin",
+                "auth",
+                "logout"
+              ]
             },
             "description": "Logout and invalidate current session"
           },
@@ -243,8 +285,13 @@
             "header": [],
             "url": {
               "raw": "{{base_url}}/admin/users?page=1&limit=10&search=&role=",
-              "host": ["{{base_url}}"],
-              "path": ["admin", "users"],
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "admin",
+                "users"
+              ],
               "query": [
                 {
                   "key": "page",
@@ -275,8 +322,14 @@
             "header": [],
             "url": {
               "raw": "{{base_url}}/admin/users/:id",
-              "host": ["{{base_url}}"],
-              "path": ["admin", "users", ":id"],
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "admin",
+                "users",
+                ":id"
+              ],
               "variable": [
                 {
                   "key": "id",
@@ -304,8 +357,13 @@
             },
             "url": {
               "raw": "{{base_url}}/admin/users",
-              "host": ["{{base_url}}"],
-              "path": ["admin", "users"]
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "admin",
+                "users"
+              ]
             },
             "description": "Create a new user account"
           },
@@ -327,8 +385,14 @@
             },
             "url": {
               "raw": "{{base_url}}/admin/users/:id",
-              "host": ["{{base_url}}"],
-              "path": ["admin", "users", ":id"],
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "admin",
+                "users",
+                ":id"
+              ],
               "variable": [
                 {
                   "key": "id",
@@ -356,8 +420,15 @@
             },
             "url": {
               "raw": "{{base_url}}/admin/users/:id/status",
-              "host": ["{{base_url}}"],
-              "path": ["admin", "users", ":id", "status"],
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "admin",
+                "users",
+                ":id",
+                "status"
+              ],
               "variable": [
                 {
                   "key": "id",
@@ -376,8 +447,14 @@
             "header": [],
             "url": {
               "raw": "{{base_url}}/admin/users/:id",
-              "host": ["{{base_url}}"],
-              "path": ["admin", "users", ":id"],
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "admin",
+                "users",
+                ":id"
+              ],
               "variable": [
                 {
                   "key": "id",
@@ -401,8 +478,13 @@
             "header": [],
             "url": {
               "raw": "{{base_url}}/admin/news?page=1&limit=10&search=&status=&category_id=&is_featured=",
-              "host": ["{{base_url}}"],
-              "path": ["admin", "news"],
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "admin",
+                "news"
+              ],
               "query": [
                 {
                   "key": "page",
@@ -441,8 +523,14 @@
             "header": [],
             "url": {
               "raw": "{{base_url}}/admin/news/:id",
-              "host": ["{{base_url}}"],
-              "path": ["admin", "news", ":id"],
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "admin",
+                "news",
+                ":id"
+              ],
               "variable": [
                 {
                   "key": "id",
@@ -470,8 +558,13 @@
             },
             "url": {
               "raw": "{{base_url}}/admin/news",
-              "host": ["{{base_url}}"],
-              "path": ["admin", "news"]
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "admin",
+                "news"
+              ]
             },
             "description": "Create a new news article"
           },
@@ -493,8 +586,14 @@
             },
             "url": {
               "raw": "{{base_url}}/admin/news/:id",
-              "host": ["{{base_url}}"],
-              "path": ["admin", "news", ":id"],
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "admin",
+                "news",
+                ":id"
+              ],
               "variable": [
                 {
                   "key": "id",
@@ -513,8 +612,15 @@
             "header": [],
             "url": {
               "raw": "{{base_url}}/admin/news/:id/publish",
-              "host": ["{{base_url}}"],
-              "path": ["admin", "news", ":id", "publish"],
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "admin",
+                "news",
+                ":id",
+                "publish"
+              ],
               "variable": [
                 {
                   "key": "id",
@@ -533,8 +639,15 @@
             "header": [],
             "url": {
               "raw": "{{base_url}}/admin/news/:id/archive",
-              "host": ["{{base_url}}"],
-              "path": ["admin", "news", ":id", "archive"],
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "admin",
+                "news",
+                ":id",
+                "archive"
+              ],
               "variable": [
                 {
                   "key": "id",
@@ -553,8 +666,15 @@
             "header": [],
             "url": {
               "raw": "{{base_url}}/admin/news/:id/featured",
-              "host": ["{{base_url}}"],
-              "path": ["admin", "news", ":id", "featured"],
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "admin",
+                "news",
+                ":id",
+                "featured"
+              ],
               "variable": [
                 {
                   "key": "id",
@@ -573,8 +693,14 @@
             "header": [],
             "url": {
               "raw": "{{base_url}}/admin/news/:id",
-              "host": ["{{base_url}}"],
-              "path": ["admin", "news", ":id"],
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "admin",
+                "news",
+                ":id"
+              ],
               "variable": [
                 {
                   "key": "id",
@@ -598,8 +724,13 @@
             "header": [],
             "url": {
               "raw": "{{base_url}}/admin/opinions?page=1&limit=10&search=&status=&category_id=",
-              "host": ["{{base_url}}"],
-              "path": ["admin", "opinions"],
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "admin",
+                "opinions"
+              ],
               "query": [
                 {
                   "key": "page",
@@ -634,8 +765,14 @@
             "header": [],
             "url": {
               "raw": "{{base_url}}/admin/opinions/:id",
-              "host": ["{{base_url}}"],
-              "path": ["admin", "opinions", ":id"],
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "admin",
+                "opinions",
+                ":id"
+              ],
               "variable": [
                 {
                   "key": "id",
@@ -663,8 +800,13 @@
             },
             "url": {
               "raw": "{{base_url}}/admin/opinions",
-              "host": ["{{base_url}}"],
-              "path": ["admin", "opinions"]
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "admin",
+                "opinions"
+              ]
             },
             "description": "Create a new opinion article"
           },
@@ -686,8 +828,14 @@
             },
             "url": {
               "raw": "{{base_url}}/admin/opinions/:id",
-              "host": ["{{base_url}}"],
-              "path": ["admin", "opinions", ":id"],
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "admin",
+                "opinions",
+                ":id"
+              ],
               "variable": [
                 {
                   "key": "id",
@@ -706,8 +854,15 @@
             "header": [],
             "url": {
               "raw": "{{base_url}}/admin/opinions/:id/publish",
-              "host": ["{{base_url}}"],
-              "path": ["admin", "opinions", ":id", "publish"],
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "admin",
+                "opinions",
+                ":id",
+                "publish"
+              ],
               "variable": [
                 {
                   "key": "id",
@@ -726,8 +881,14 @@
             "header": [],
             "url": {
               "raw": "{{base_url}}/admin/opinions/:id",
-              "host": ["{{base_url}}"],
-              "path": ["admin", "opinions", ":id"],
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "admin",
+                "opinions",
+                ":id"
+              ],
               "variable": [
                 {
                   "key": "id",
@@ -751,8 +912,13 @@
             "header": [],
             "url": {
               "raw": "{{base_url}}/admin/documents?page=1&limit=10&search=&category_id=",
-              "host": ["{{base_url}}"],
-              "path": ["admin", "documents"],
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "admin",
+                "documents"
+              ],
               "query": [
                 {
                   "key": "page",
@@ -783,8 +949,14 @@
             "header": [],
             "url": {
               "raw": "{{base_url}}/admin/documents/:id",
-              "host": ["{{base_url}}"],
-              "path": ["admin", "documents", ":id"],
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "admin",
+                "documents",
+                ":id"
+              ],
               "variable": [
                 {
                   "key": "id",
@@ -803,8 +975,15 @@
             "header": [],
             "url": {
               "raw": "{{base_url}}/admin/documents/:id/stats",
-              "host": ["{{base_url}}"],
-              "path": ["admin", "documents", ":id", "stats"],
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "admin",
+                "documents",
+                ":id",
+                "stats"
+              ],
               "variable": [
                 {
                   "key": "id",
@@ -828,39 +1007,23 @@
               }
             ],
             "body": {
-              "mode": "formdata",
-              "formdata": [
-                {
-                  "key": "title",
-                  "value": "Pedoman Kurikulum Ma'arif NU 2024",
-                  "type": "text"
-                },
-                {
-                  "key": "description",
-                  "value": "Pedoman kurikulum untuk sekolah-sekolah di bawah naungan LP Ma'arif NU tahun 2024",
-                  "type": "text"
-                },
-                {
-                  "key": "category_id",
-                  "value": "1",
-                  "type": "text"
-                },
-                {
-                  "key": "file",
-                  "type": "file",
-                  "src": []
-                },
-                {
-                  "key": "tags",
-                  "value": "[1, 2, 3]",
-                  "type": "text"
+              "mode": "raw",
+              "raw": "{\r\n    \"title\": \"Panduan Administrasi LP Ma'arif NU 2024\",\r\n    \"description\": \"Dokumen panduan lengkap untuk administrasi LP Ma'arif NU tahun 2024\",\r\n    \"category_id\": 1,\r\n    \"file_name\": \"panduan-admin-2024.pdf\",\r\n    \"file_url\": \"/uploads/documents/panduan-admin-2024.pdf\",\r\n    \"file_type\": \"pdf\",\r\n    \"file_size\": 2048576,\r\n    \"mime_type\": \"application/pdf\",\r\n    \"is_public\": true,\r\n    \"status\": \"active\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
                 }
-              ]
+              }
             },
             "url": {
               "raw": "{{base_url}}/admin/documents",
-              "host": ["{{base_url}}"],
-              "path": ["admin", "documents"]
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "admin",
+                "documents"
+              ]
             },
             "description": "Upload a new document"
           },
@@ -878,19 +1041,25 @@
               }
             ],
             "body": {
-              "mode": "formdata",
-              "formdata": [
-                {
-                  "key": "file",
-                  "type": "file",
-                  "src": []
+              "mode": "raw",
+              "raw": "{\r\n    \"file_name\": \"panduan-admin-2024-revisi.pdf\",\r\n    \"file_url\": \"/uploads/documents/panduan-admin-2024-revisi.pdf\",\r\n    \"file_type\": \"pdf\",\r\n    \"file_size\": 2150000,\r\n    \"mime_type\": \"application/pdf\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
                 }
-              ]
+              }
             },
             "url": {
               "raw": "{{base_url}}/admin/documents/:id/file",
-              "host": ["{{base_url}}"],
-              "path": ["admin", "documents", ":id", "file"],
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "admin",
+                "documents",
+                ":id",
+                "file"
+              ],
               "variable": [
                 {
                   "key": "id",
@@ -909,8 +1078,14 @@
             "header": [],
             "url": {
               "raw": "{{base_url}}/admin/documents/:id",
-              "host": ["{{base_url}}"],
-              "path": ["admin", "documents", ":id"],
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "admin",
+                "documents",
+                ":id"
+              ],
               "variable": [
                 {
                   "key": "id",
@@ -934,8 +1109,13 @@
             "header": [],
             "url": {
               "raw": "{{base_url}}/admin/categories",
-              "host": ["{{base_url}}"],
-              "path": ["admin", "categories"]
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "admin",
+                "categories"
+              ]
             },
             "description": "Get all categories"
           },
@@ -957,8 +1137,13 @@
             },
             "url": {
               "raw": "{{base_url}}/admin/categories",
-              "host": ["{{base_url}}"],
-              "path": ["admin", "categories"]
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "admin",
+                "categories"
+              ]
             },
             "description": "Create a new category"
           },
@@ -980,8 +1165,14 @@
             },
             "url": {
               "raw": "{{base_url}}/admin/categories/:id",
-              "host": ["{{base_url}}"],
-              "path": ["admin", "categories", ":id"],
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "admin",
+                "categories",
+                ":id"
+              ],
               "variable": [
                 {
                   "key": "id",
@@ -1000,8 +1191,14 @@
             "header": [],
             "url": {
               "raw": "{{base_url}}/admin/categories/:id",
-              "host": ["{{base_url}}"],
-              "path": ["admin", "categories", ":id"],
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "admin",
+                "categories",
+                ":id"
+              ],
               "variable": [
                 {
                   "key": "id",
@@ -1025,8 +1222,13 @@
             "header": [],
             "url": {
               "raw": "{{base_url}}/admin/tags",
-              "host": ["{{base_url}}"],
-              "path": ["admin", "tags"]
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "admin",
+                "tags"
+              ]
             },
             "description": "Get all tags"
           },
@@ -1048,8 +1250,13 @@
             },
             "url": {
               "raw": "{{base_url}}/admin/tags",
-              "host": ["{{base_url}}"],
-              "path": ["admin", "tags"]
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "admin",
+                "tags"
+              ]
             },
             "description": "Create a new tag"
           },
@@ -1071,8 +1278,14 @@
             },
             "url": {
               "raw": "{{base_url}}/admin/tags/:id",
-              "host": ["{{base_url}}"],
-              "path": ["admin", "tags", ":id"],
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "admin",
+                "tags",
+                ":id"
+              ],
               "variable": [
                 {
                   "key": "id",
@@ -1091,8 +1304,14 @@
             "header": [],
             "url": {
               "raw": "{{base_url}}/admin/tags/:id",
-              "host": ["{{base_url}}"],
-              "path": ["admin", "tags", ":id"],
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "admin",
+                "tags",
+                ":id"
+              ],
               "variable": [
                 {
                   "key": "id",
@@ -1116,8 +1335,13 @@
             "header": [],
             "url": {
               "raw": "{{base_url}}/admin/hero-slides",
-              "host": ["{{base_url}}"],
-              "path": ["admin", "hero-slides"]
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "admin",
+                "hero-slides"
+              ]
             },
             "description": "Get all hero slides ordered by position"
           },
@@ -1130,8 +1354,14 @@
             "header": [],
             "url": {
               "raw": "{{base_url}}/admin/hero-slides/:id",
-              "host": ["{{base_url}}"],
-              "path": ["admin", "hero-slides", ":id"],
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "admin",
+                "hero-slides",
+                ":id"
+              ],
               "variable": [
                 {
                   "key": "id",
@@ -1159,8 +1389,13 @@
             },
             "url": {
               "raw": "{{base_url}}/admin/hero-slides",
-              "host": ["{{base_url}}"],
-              "path": ["admin", "hero-slides"]
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "admin",
+                "hero-slides"
+              ]
             },
             "description": "Create a new hero slide"
           },
@@ -1182,8 +1417,14 @@
             },
             "url": {
               "raw": "{{base_url}}/admin/hero-slides/:id",
-              "host": ["{{base_url}}"],
-              "path": ["admin", "hero-slides", ":id"],
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "admin",
+                "hero-slides",
+                ":id"
+              ],
               "variable": [
                 {
                   "key": "id",
@@ -1207,12 +1448,18 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"order\": [3, 1, 2, 4]\n}"
+              "raw": "{\n  \"slide_orders\": [\n        {\n            \"id\": 1,\n            \"order\": 3\n        },\n        {\n            \"id\": 2,\n            \"order\": 4\n        }\n    ]\n}"
             },
             "url": {
               "raw": "{{base_url}}/admin/hero-slides/reorder",
-              "host": ["{{base_url}}"],
-              "path": ["admin", "hero-slides", "reorder"]
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "admin",
+                "hero-slides",
+                "reorder"
+              ]
             },
             "description": "Reorder hero slides positions"
           },
@@ -1225,8 +1472,14 @@
             "header": [],
             "url": {
               "raw": "{{base_url}}/admin/hero-slides/:id",
-              "host": ["{{base_url}}"],
-              "path": ["admin", "hero-slides", ":id"],
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "admin",
+                "hero-slides",
+                ":id"
+              ],
               "variable": [
                 {
                   "key": "id",
@@ -1253,8 +1506,14 @@
                 "header": [],
                 "url": {
                   "raw": "{{base_url}}/admin/organization/positions",
-                  "host": ["{{base_url}}"],
-                  "path": ["admin", "organization", "positions"]
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "admin",
+                    "organization",
+                    "positions"
+                  ]
                 },
                 "description": "Get all organization positions"
               },
@@ -1272,8 +1531,14 @@
                 "header": [],
                 "url": {
                   "raw": "{{base_url}}/admin/organization/board-members",
-                  "host": ["{{base_url}}"],
-                  "path": ["admin", "organization", "board-members"]
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "admin",
+                    "organization",
+                    "board-members"
+                  ]
                 },
                 "description": "Get all board members"
               },
@@ -1291,12 +1556,18 @@
                 ],
                 "body": {
                   "mode": "raw",
-                  "raw": "{\n  \"name\": \"KH. Dr. Ahmad Zahro\",\n  \"position_id\": 1,\n  \"photo\": \"https://cdn.lpmaarif.nu.or.id/images/board/ahmad-zahro.jpg\",\n  \"bio\": \"Ketua Umum LP Ma'arif NU periode 2022-2027. Aktif dalam pengembangan pendidikan Islam di Indonesia.\",\n  \"order\": 1\n}"
+                  "raw": "{\n  \"name\": \"KH. Dr. Ahmad Zahro\",\n  \"position_id\": 1,\n  \"photo\": \"https://cdn.lpmaarif.nu.or.id/images/board/ahmad-zahro.jpg\",\n  \"bio\": \"Ketua Umum LP Ma'arif NU periode 2022-2027. Aktif dalam pengembangan pendidikan Islam di Indonesia.\",\n  \"order\": 1,\n  \"period_start\": 2025,\n  \"period_end\": 2026\n}"
                 },
                 "url": {
                   "raw": "{{base_url}}/admin/organization/board-members",
-                  "host": ["{{base_url}}"],
-                  "path": ["admin", "organization", "board-members"]
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "admin",
+                    "organization",
+                    "board-members"
+                  ]
                 },
                 "description": "Create a new board member"
               },
@@ -1318,8 +1589,15 @@
                 },
                 "url": {
                   "raw": "{{base_url}}/admin/organization/board-members/:id",
-                  "host": ["{{base_url}}"],
-                  "path": ["admin", "organization", "board-members", ":id"],
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "admin",
+                    "organization",
+                    "board-members",
+                    ":id"
+                  ],
                   "variable": [
                     {
                       "key": "id",
@@ -1338,8 +1616,15 @@
                 "header": [],
                 "url": {
                   "raw": "{{base_url}}/admin/organization/board-members/:id",
-                  "host": ["{{base_url}}"],
-                  "path": ["admin", "organization", "board-members", ":id"],
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "admin",
+                    "organization",
+                    "board-members",
+                    ":id"
+                  ],
                   "variable": [
                     {
                       "key": "id",
@@ -1363,8 +1648,14 @@
                 "header": [],
                 "url": {
                   "raw": "{{base_url}}/admin/organization/pengurus",
-                  "host": ["{{base_url}}"],
-                  "path": ["admin", "organization", "pengurus"]
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "admin",
+                    "organization",
+                    "pengurus"
+                  ]
                 },
                 "description": "Get all pengurus (organizational staff)"
               },
@@ -1377,8 +1668,15 @@
                 "header": [],
                 "url": {
                   "raw": "{{base_url}}/admin/organization/pengurus/:id",
-                  "host": ["{{base_url}}"],
-                  "path": ["admin", "organization", "pengurus", ":id"],
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "admin",
+                    "organization",
+                    "pengurus",
+                    ":id"
+                  ],
                   "variable": [
                     {
                       "key": "id",
@@ -1406,8 +1704,14 @@
                 },
                 "url": {
                   "raw": "{{base_url}}/admin/organization/pengurus",
-                  "host": ["{{base_url}}"],
-                  "path": ["admin", "organization", "pengurus"]
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "admin",
+                    "organization",
+                    "pengurus"
+                  ]
                 },
                 "description": "Create a new pengurus"
               },
@@ -1429,8 +1733,15 @@
                 },
                 "url": {
                   "raw": "{{base_url}}/admin/organization/pengurus/:id",
-                  "host": ["{{base_url}}"],
-                  "path": ["admin", "organization", "pengurus", ":id"],
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "admin",
+                    "organization",
+                    "pengurus",
+                    ":id"
+                  ],
                   "variable": [
                     {
                       "key": "id",
@@ -1458,8 +1769,15 @@
                 },
                 "url": {
                   "raw": "{{base_url}}/admin/organization/pengurus/reorder",
-                  "host": ["{{base_url}}"],
-                  "path": ["admin", "organization", "pengurus", "reorder"]
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "admin",
+                    "organization",
+                    "pengurus",
+                    "reorder"
+                  ]
                 },
                 "description": "Reorder pengurus positions"
               },
@@ -1472,8 +1790,15 @@
                 "header": [],
                 "url": {
                   "raw": "{{base_url}}/admin/organization/pengurus/:id",
-                  "host": ["{{base_url}}"],
-                  "path": ["admin", "organization", "pengurus", ":id"],
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "admin",
+                    "organization",
+                    "pengurus",
+                    ":id"
+                  ],
                   "variable": [
                     {
                       "key": "id",
@@ -1497,8 +1822,14 @@
                 "header": [],
                 "url": {
                   "raw": "{{base_url}}/admin/organization/departments",
-                  "host": ["{{base_url}}"],
-                  "path": ["admin", "organization", "departments"]
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "admin",
+                    "organization",
+                    "departments"
+                  ]
                 },
                 "description": "Get all departments"
               },
@@ -1520,8 +1851,15 @@
                 },
                 "url": {
                   "raw": "{{base_url}}/admin/organization/departments/:id",
-                  "host": ["{{base_url}}"],
-                  "path": ["admin", "organization", "departments", ":id"],
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "admin",
+                    "organization",
+                    "departments",
+                    ":id"
+                  ],
                   "variable": [
                     {
                       "key": "id",
@@ -1545,8 +1883,14 @@
                 "header": [],
                 "url": {
                   "raw": "{{base_url}}/admin/organization/editorial-team",
-                  "host": ["{{base_url}}"],
-                  "path": ["admin", "organization", "editorial-team"]
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "admin",
+                    "organization",
+                    "editorial-team"
+                  ]
                 },
                 "description": "Get all editorial team members"
               },
@@ -1568,8 +1912,15 @@
                 },
                 "url": {
                   "raw": "{{base_url}}/admin/organization/editorial-team/:id",
-                  "host": ["{{base_url}}"],
-                  "path": ["admin", "organization", "editorial-team", ":id"],
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "admin",
+                    "organization",
+                    "editorial-team",
+                    ":id"
+                  ],
                   "variable": [
                     {
                       "key": "id",
@@ -1593,8 +1944,14 @@
                 "header": [],
                 "url": {
                   "raw": "{{base_url}}/admin/organization/editorial-council",
-                  "host": ["{{base_url}}"],
-                  "path": ["admin", "organization", "editorial-council"]
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "admin",
+                    "organization",
+                    "editorial-council"
+                  ]
                 },
                 "description": "Get all editorial council members"
               },
@@ -1616,8 +1973,15 @@
                 },
                 "url": {
                   "raw": "{{base_url}}/admin/organization/editorial-council/:id",
-                  "host": ["{{base_url}}"],
-                  "path": ["admin", "organization", "editorial-council", ":id"],
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "admin",
+                    "organization",
+                    "editorial-council",
+                    ":id"
+                  ],
                   "variable": [
                     {
                       "key": "id",
@@ -1643,8 +2007,13 @@
             "header": [],
             "url": {
               "raw": "{{base_url}}/admin/pages",
-              "host": ["{{base_url}}"],
-              "path": ["admin", "pages"]
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "admin",
+                "pages"
+              ]
             },
             "description": "Get all pages"
           },
@@ -1657,12 +2026,18 @@
             "header": [],
             "url": {
               "raw": "{{base_url}}/admin/pages/:slug",
-              "host": ["{{base_url}}"],
-              "path": ["admin", "pages", ":slug"],
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "admin",
+                "pages",
+                ":slug"
+              ],
               "variable": [
                 {
                   "key": "slug",
-                  "value": "tentang-kami"
+                  "value": "pramuka"
                 }
               ]
             },
@@ -1686,8 +2061,14 @@
             },
             "url": {
               "raw": "{{base_url}}/admin/pages/:slug",
-              "host": ["{{base_url}}"],
-              "path": ["admin", "pages", ":slug"],
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "admin",
+                "pages",
+                ":slug"
+              ],
               "variable": [
                 {
                   "key": "slug",
@@ -1711,8 +2092,13 @@
             "header": [],
             "url": {
               "raw": "{{base_url}}/admin/event-flyers?page=1&limit=10",
-              "host": ["{{base_url}}"],
-              "path": ["admin", "event-flyers"],
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "admin",
+                "event-flyers"
+              ],
               "query": [
                 {
                   "key": "page",
@@ -1735,8 +2121,14 @@
             "header": [],
             "url": {
               "raw": "{{base_url}}/admin/event-flyers/:id",
-              "host": ["{{base_url}}"],
-              "path": ["admin", "event-flyers", ":id"],
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "admin",
+                "event-flyers",
+                ":id"
+              ],
               "variable": [
                 {
                   "key": "id",
@@ -1760,39 +2152,23 @@
               }
             ],
             "body": {
-              "mode": "formdata",
-              "formdata": [
-                {
-                  "key": "title",
-                  "value": "Muktamar LP Ma'arif NU 2024",
-                  "type": "text"
-                },
-                {
-                  "key": "description",
-                  "value": "Muktamar LP Ma'arif NU tahun 2024 akan diselenggarakan di Jakarta Convention Center",
-                  "type": "text"
-                },
-                {
-                  "key": "event_date",
-                  "value": "2024-08-15",
-                  "type": "text"
-                },
-                {
-                  "key": "location",
-                  "value": "Jakarta Convention Center",
-                  "type": "text"
-                },
-                {
-                  "key": "image",
-                  "type": "file",
-                  "src": []
+              "mode": "raw",
+              "raw": "{\r\n    \"title\": \"Seminar Nasional Pendidikan Islam 2024\",\r\n    \"description\": \"Seminar Nasional dengan tema 'Transformasi Pendidikan Islam di Era Digital' yang akan menghadirkan narasumber kompeten di bidang pendidikan\",\r\n    \"image\": \"/uploads/media/event-seminar-2024.jpg\",\r\n    \"event_date\": \"2024-03-15T08:00:00Z\",\r\n    \"event_location\": \"Auditorium Utama, Jakarta\",\r\n    \"registration_url\": \"https://bit.ly/seminar-pendidikan-2024\",\r\n    \"contact_person\": \"Ahmad Fauzi\",\r\n    \"contact_phone\": \"081234567890\",\r\n    \"contact_email\": \"seminar@lpmarifnu.org\",\r\n    \"order_number\": 1,\r\n    \"is_active\": true,\r\n    \"start_display_date\": \"2024-02-01T00:00:00Z\",\r\n    \"end_display_date\": \"2024-03-15T23:59:59Z\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
                 }
-              ]
+              }
             },
             "url": {
               "raw": "{{base_url}}/admin/event-flyers",
-              "host": ["{{base_url}}"],
-              "path": ["admin", "event-flyers"]
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "admin",
+                "event-flyers"
+              ]
             },
             "description": "Upload a new event flyer"
           },
@@ -1805,8 +2181,14 @@
             "header": [],
             "url": {
               "raw": "{{base_url}}/admin/event-flyers/:id",
-              "host": ["{{base_url}}"],
-              "path": ["admin", "event-flyers", ":id"],
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "admin",
+                "event-flyers",
+                ":id"
+              ],
               "variable": [
                 {
                   "key": "id",
@@ -1830,8 +2212,13 @@
             "header": [],
             "url": {
               "raw": "{{base_url}}/admin/media?page=1&limit=20&type=",
-              "host": ["{{base_url}}"],
-              "path": ["admin", "media"],
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "admin",
+                "media"
+              ],
               "query": [
                 {
                   "key": "page",
@@ -1863,29 +2250,24 @@
               }
             ],
             "body": {
-              "mode": "formdata",
-              "formdata": [
-                {
-                  "key": "file",
-                  "type": "file",
-                  "src": []
-                },
-                {
-                  "key": "alt_text",
-                  "value": "Logo LP Ma'arif NU",
-                  "type": "text"
-                },
-                {
-                  "key": "caption",
-                  "value": "Logo resmi Lembaga Pendidikan Ma'arif Nahdlatul Ulama",
-                  "type": "text"
+              "mode": "raw",
+              "raw": "{\r\n    \"id\": 15,\r\n    \"file_name\": \"20240203_1234567890_image.jpg\",\r\n    \"original_name\": \"image.jpg\",\r\n    \"file_path\": \"/uploads/event-flyers/20240203_1234567890_image.jpg\",\r\n    \"file_url\": \"http://localhost:8080/uploads/event-flyers/20240203_1234567890_image.jpg\",\r\n    \"file_type\": \"image\",\r\n    \"mime_type\": \"image/jpeg\",\r\n    \"file_size\": 524288,\r\n    \"width\": 1920,\r\n    \"height\": 1080,\r\n    \"folder\": \"event-flyers\",\r\n    \"alt_text\": \"Banner Seminar Pendidikan 2024\",\r\n    \"caption\": \"Banner untuk seminar nasional pendidikan Islam tahun 2024\",\r\n    \"uploaded_by\": 1,\r\n    \"created_at\": \"2024-02-03T10:30:00Z\",\r\n    \"updated_at\": \"2024-02-03T10:30:00Z\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
                 }
-              ]
+              }
             },
             "url": {
               "raw": "{{base_url}}/admin/media/upload",
-              "host": ["{{base_url}}"],
-              "path": ["admin", "media", "upload"]
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "admin",
+                "media",
+                "upload"
+              ]
             },
             "description": "Upload a new media file (image, video, document)"
           },
@@ -1898,8 +2280,14 @@
             "header": [],
             "url": {
               "raw": "{{base_url}}/admin/media/:id",
-              "host": ["{{base_url}}"],
-              "path": ["admin", "media", ":id"],
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "admin",
+                "media",
+                ":id"
+              ],
               "variable": [
                 {
                   "key": "id",
@@ -1923,8 +2311,13 @@
             "header": [],
             "url": {
               "raw": "{{base_url}}/admin/contact-messages?page=1&limit=10&status=",
-              "host": ["{{base_url}}"],
-              "path": ["admin", "contact-messages"],
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "admin",
+                "contact-messages"
+              ],
               "query": [
                 {
                   "key": "page",
@@ -1951,8 +2344,14 @@
             "header": [],
             "url": {
               "raw": "{{base_url}}/admin/contact-messages/:id",
-              "host": ["{{base_url}}"],
-              "path": ["admin", "contact-messages", ":id"],
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "admin",
+                "contact-messages",
+                ":id"
+              ],
               "variable": [
                 {
                   "key": "id",
@@ -1980,8 +2379,15 @@
             },
             "url": {
               "raw": "{{base_url}}/admin/contact-messages/:id/status",
-              "host": ["{{base_url}}"],
-              "path": ["admin", "contact-messages", ":id", "status"],
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "admin",
+                "contact-messages",
+                ":id",
+                "status"
+              ],
               "variable": [
                 {
                   "key": "id",
@@ -2000,8 +2406,14 @@
             "header": [],
             "url": {
               "raw": "{{base_url}}/admin/contact-messages/:id",
-              "host": ["{{base_url}}"],
-              "path": ["admin", "contact-messages", ":id"],
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "admin",
+                "contact-messages",
+                ":id"
+              ],
               "variable": [
                 {
                   "key": "id",
@@ -2025,8 +2437,13 @@
             "header": [],
             "url": {
               "raw": "{{base_url}}/admin/settings",
-              "host": ["{{base_url}}"],
-              "path": ["admin", "settings"]
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "admin",
+                "settings"
+              ]
             },
             "description": "Get all application settings"
           },
@@ -2044,12 +2461,17 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"site_name\": \"LP Ma'arif NU\",\n  \"site_description\": \"Lembaga Pendidikan Ma'arif Nahdlatul Ulama\",\n  \"site_logo\": \"https://cdn.lpmaarif.nu.or.id/images/logo.png\",\n  \"site_favicon\": \"https://cdn.lpmaarif.nu.or.id/images/favicon.ico\",\n  \"contact_email\": \"info@lpmaarif.nu.or.id\",\n  \"contact_phone\": \"+62 21 1234567\",\n  \"contact_address\": \"Jl. Kramat Raya No.164, Jakarta Pusat 10430\",\n  \"social_facebook\": \"https://facebook.com/lpmaarifnu\",\n  \"social_twitter\": \"https://twitter.com/lpmaarifnu\",\n  \"social_instagram\": \"https://instagram.com/lpmaarifnu\",\n  \"social_youtube\": \"https://youtube.com/@lpmaarifnu\",\n  \"meta_keywords\": \"lp ma'arif nu, pendidikan islam, nahdlatul ulama, sekolah islam\",\n  \"meta_description\": \"Lembaga Pendidikan Ma'arif NU - Lembaga pendidikan Islam terbesar di Indonesia\",\n  \"google_analytics_id\": \"UA-XXXXXXXXX-X\",\n  \"items_per_page\": 10,\n  \"maintenance_mode\": false\n}"
+              "raw": "{\n  \"site_name\": \"LP Ma'arif NU\",\n  \"site_description\": \"Lembaga Pendidikan Ma'arif Nahdlatul Ulama - update\",\n  \"site_logo\": \"https://cdn.lpmaarif.nu.or.id/images/logo.png\",\n  \"site_favicon\": \"https://cdn.lpmaarif.nu.or.id/images/favicon.ico\",\n  \"contact_email\": \"info@lpmaarif.nu.or.id\",\n  \"contact_phone\": \"+62 21 1234567\",\n  \"contact_address\": \"Jl. Kramat Raya No.164, Jakarta Pusat 10430\",\n  \"social_facebook\": \"https://facebook.com/lpmaarifnu\",\n  \"social_twitter\": \"https://twitter.com/lpmaarifnu\",\n  \"social_instagram\": \"https://instagram.com/lpmaarifnuu\",\n  \"social_youtube\": \"https://youtube.com/@lpmaarifnu\",\n  \"meta_keywords\": \"lp ma'arif nu, pendidikan islam, nahdlatul ulama, sekolah islam\",\n  \"meta_description\": \"Lembaga Pendidikan Ma'arif NU - Lembaga pendidikan Islam terbesar di Indonesia\",\n  \"google_analytics_id\": \"UA-XXXXXXXXX-X\",\n  \"items_per_page\": 10,\n  \"maintenance_mode\": false\n}"
             },
             "url": {
               "raw": "{{base_url}}/admin/settings",
-              "host": ["{{base_url}}"],
-              "path": ["admin", "settings"]
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "admin",
+                "settings"
+              ]
             },
             "description": "Update application settings"
           },
@@ -2067,8 +2489,13 @@
             "header": [],
             "url": {
               "raw": "{{base_url}}/admin/activity-logs?page=1&limit=20&user_id=&action=&resource=",
-              "host": ["{{base_url}}"],
-              "path": ["admin", "activity-logs"],
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "admin",
+                "activity-logs"
+              ],
               "query": [
                 {
                   "key": "page",
@@ -2108,8 +2535,13 @@
             "header": [],
             "url": {
               "raw": "{{base_url}}/admin/notifications?page=1&limit=20&is_read=",
-              "host": ["{{base_url}}"],
-              "path": ["admin", "notifications"],
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "admin",
+                "notifications"
+              ],
               "query": [
                 {
                   "key": "page",
@@ -2136,8 +2568,15 @@
             "header": [],
             "url": {
               "raw": "{{base_url}}/admin/notifications/:id/read",
-              "host": ["{{base_url}}"],
-              "path": ["admin", "notifications", ":id", "read"],
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "admin",
+                "notifications",
+                ":id",
+                "read"
+              ],
               "variable": [
                 {
                   "key": "id",
@@ -2156,8 +2595,14 @@
             "header": [],
             "url": {
               "raw": "{{base_url}}/admin/notifications/read-all",
-              "host": ["{{base_url}}"],
-              "path": ["admin", "notifications", "read-all"]
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "admin",
+                "notifications",
+                "read-all"
+              ]
             },
             "description": "Mark all notifications as read for current user"
           },
@@ -2170,8 +2615,14 @@
             "header": [],
             "url": {
               "raw": "{{base_url}}/admin/notifications/:id",
-              "host": ["{{base_url}}"],
-              "path": ["admin", "notifications", ":id"],
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "admin",
+                "notifications",
+                ":id"
+              ],
               "variable": [
                 {
                   "key": "id",
@@ -2186,6 +2637,16 @@
       ]
     }
   ],
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{access_token}}",
+        "type": "string"
+      }
+    ]
+  },
   "variable": [
     {
       "key": "base_url",

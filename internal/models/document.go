@@ -39,7 +39,7 @@ type DocumentCreateRequest struct {
 	Description *string `json:"description"`
 	CategoryID  *uint   `json:"category_id"`
 	FileName    string  `json:"file_name" binding:"required"`
-	FilePath    string  `json:"file_path" binding:"required"`
+	FileURL     string  `json:"file_url" binding:"required"`
 	FileType    string  `json:"file_type" binding:"required"`
 	FileSize    uint64  `json:"file_size" binding:"required"`
 	MimeType    *string `json:"mime_type"`
@@ -63,7 +63,7 @@ type DocumentResponse struct {
 	CategoryID    *uint     `json:"category_id"`
 	Category      *Category `json:"category,omitempty"`
 	FileName      string    `json:"file_name"`
-	FilePath      string    `json:"file_path"`
+	FileURL       string    `json:"file_url"`
 	FileType      string    `json:"file_type"`
 	FileSize      uint64    `json:"file_size"`
 	MimeType      *string   `json:"mime_type"`

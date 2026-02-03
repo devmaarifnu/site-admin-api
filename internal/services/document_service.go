@@ -64,7 +64,7 @@ func (s *documentService) Create(req *models.DocumentCreateRequest, uploadedBy u
 		Description: req.Description,
 		CategoryID:  req.CategoryID,
 		FileName:    req.FileName,
-		FilePath:    req.FilePath,
+		FilePath:    req.FileURL,
 		FileType:    req.FileType,
 		FileSize:    req.FileSize,
 		MimeType:    req.MimeType,
@@ -146,16 +146,16 @@ func (s *documentService) IncrementDownloads(id uint) error {
 
 func (s *documentService) GetStats() (map[string]interface{}, error) {
 	stats := make(map[string]interface{})
-	
+
 	// Get total documents
 	docs, _, err := s.docRepo.FindAll(1, 1, "", map[string]interface{}{})
 	if err != nil {
 		return nil, err
 	}
-	
+
 	stats["total_documents"] = len(docs)
 	stats["total_downloads"] = 0 // Placeholder, implement actual logic if needed
-	
+
 	return stats, nil
 }
 
@@ -195,7 +195,7 @@ func (s *documentService) toResponse(doc *models.Document) models.DocumentRespon
 		CategoryID:    doc.CategoryID,
 		Category:      doc.Category,
 		FileName:      doc.FileName,
-		FilePath:      doc.FilePath,
+		FileURL:       doc.FilePath,
 		FileType:      doc.FileType,
 		FileSize:      doc.FileSize,
 		MimeType:      doc.MimeType,
