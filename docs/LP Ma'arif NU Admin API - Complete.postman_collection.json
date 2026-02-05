@@ -2274,6 +2274,109 @@
           "response": []
         },
         {
+          "name": "Upload File to CDN",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "file",
+                  "type": "file",
+                  "src": []
+                },
+                {
+                  "key": "tag",
+                  "value": "news",
+                  "type": "text",
+                  "description": "Tag/folder for CDN (e.g., news, events, documents)"
+                },
+                {
+                  "key": "is_public",
+                  "value": "true",
+                  "type": "text",
+                  "description": "Set to true for public access, false for private"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{base_url}}/admin/cdn/upload",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "admin",
+                "cdn",
+                "upload"
+              ]
+            },
+            "description": "Upload file to CDN file server"
+          },
+          "response": []
+        },
+        {
+          "name": "Delete File from CDN",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/admin/cdn/:tag/:filename",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "admin",
+                "cdn",
+                ":tag",
+                ":filename"
+              ],
+              "variable": [
+                {
+                  "key": "tag",
+                  "value": "news"
+                },
+                {
+                  "key": "filename",
+                  "value": "example.jpg"
+                }
+              ]
+            },
+            "description": "Delete file from CDN file server"
+          },
+          "response": []
+        },
+        {
+          "name": "Get CDN File URL",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/admin/cdn/url?tag=news&filename=example.jpg",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "admin",
+                "cdn",
+                "url"
+              ],
+              "query": [
+                {
+                  "key": "tag",
+                  "value": "news"
+                },
+                {
+                  "key": "filename",
+                  "value": "example.jpg"
+                }
+              ]
+            },
+            "description": "Generate CDN file URL"
+          },
+          "response": []
+        },
+        {
           "name": "Delete Media",
           "request": {
             "method": "DELETE",

@@ -1307,6 +1307,102 @@ Dokumentasi lengkap API Contract untuk LP Ma'arif NU Admin API.
 }
 ```
 
+### 10.4. Upload File to CDN
+**Endpoint:** `POST /api/v1/admin/cdn/upload`
+
+**Authentication:** Required
+
+**Required Permission:** `media.upload`
+
+**Content-Type:** `multipart/form-data`
+
+**Form Data:**
+- `file` (file, required): File to upload
+- `tag` (string, required): Tag/folder for CDN (e.g., "news", "events", "documents")
+- `is_public` (boolean, optional): Set to true for public access, false for private (default: true)
+
+**Response (201):**
+```json
+{
+  "success": true,
+  "message": "File uploaded successfully to CDN",
+  "data": {
+    "file_id": "20240203_1234567890_image.jpg",
+    "original_name": "image.jpg",
+    "url": "http://localhost:8080/news/20240203_1234567890_image.jpg",
+    "tag": "news",
+    "size": 524288,
+    "content_type": "image/jpeg",
+    "public": true,
+    "uploaded_at": "2024-02-03T10:30:00Z",
+    "uploaded_by": {
+      "id": 1,
+      "name": "Super Admin"
+    }
+  }
+}
+```
+
+**Example Usage:**
+```bash
+curl -X POST http://localhost:8080/api/v1/admin/cdn/upload \
+  -H "Authorization: Bearer YOUR_TOKEN" \
+  -F "file=@/path/to/image.jpg" \
+  -F "tag=news" \
+  -F "is_public=true"
+```
+
+### 10.5. Delete File from CDN
+**Endpoint:** `DELETE /api/v1/admin/cdn/:tag/:filename`
+
+**Authentication:** Required
+
+**Required Permission:** `media.upload`
+
+**URL Parameters:**
+- `tag`: Tag/folder of the file (e.g., "news")
+- `filename`: Name of the file to delete
+
+**Response (200):**
+```json
+{
+  "success": true,
+  "message": "File deleted successfully from CDN"
+}
+```
+
+**Example:**
+```
+DELETE /api/v1/admin/cdn/news/20240203_1234567890_image.jpg
+```
+
+### 10.6. Get CDN File URL
+**Endpoint:** `GET /api/v1/admin/cdn/url`
+
+**Authentication:** Required
+
+**Required Permission:** `media.upload`
+
+**Query Parameters:**
+- `tag` (string, required): Tag/folder of the file
+- `filename` (string, required): Name of the file
+
+**Response (200):**
+```json
+{
+  "success": true,
+  "message": "CDN URL generated successfully",
+  "data": {
+    "url": "http://localhost:8080/news/20240203_1234567890_image.jpg"
+  }
+}
+```
+
+**Example:**
+```
+GET /api/v1/admin/cdn/url?tag=news&filename=example.jpg
+```
+
 ---
 
 ## 11. Categories

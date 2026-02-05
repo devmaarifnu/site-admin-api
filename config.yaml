@@ -3,7 +3,7 @@
 # Application Settings
 app:
   name: "LP Ma'arif NU Admin API"
-  env: "development"  # development, staging, production
+  env: "production"  # development, staging, production
   port: 3000
   api_version: "v1"
 
@@ -29,7 +29,7 @@ jwt:
 cdn:
   base_url: "http://localhost:8080"
   base_url_prod: "https://cdn.maarifnu.or.id"
-  token: "your-cdn-server-token-here"
+  token: "your-secret-token-admin-here-change-this-in-production"
   timeout: 30  # seconds
 
 # CORS Configuration

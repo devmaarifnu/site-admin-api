@@ -113,6 +113,7 @@ func main() {
 	settingHandler := handlers.NewSettingHandler(settingService)
 	activityLogHandler := handlers.NewActivityLogHandler(activityLogService)
 	notificationHandler := handlers.NewNotificationHandler(notificationService)
+	cdnHandler := handlers.NewCDNHandler(cfg)
 
 	// Setup routes
 	routes.SetupRoutes(
@@ -135,6 +136,7 @@ func main() {
 		settingHandler,
 		activityLogHandler,
 		notificationHandler,
+		cdnHandler,
 	)
 
 	// Start server

@@ -30,6 +30,7 @@ func SetupRoutes(
 	settingHandler *handlers.SettingHandler,
 	activityLogHandler *handlers.ActivityLogHandler,
 	notificationHandler *handlers.NotificationHandler,
+	cdnHandler *handlers.CDNHandler,
 ) {
 	// Health check
 	router.GET("/health", func(c *gin.Context) {
@@ -44,10 +45,11 @@ func SetupRoutes(
 	api := router.Group("/api/" + cfg.App.APIVersion)
 	{
 		setupAuthRoutes(api, authHandler)
+		setupPublicRoutes(api, mediaHandler)
 		setupProtectedRoutes(api, cfg, authService, authHandler, userHandler, newsHandler, opinionHandler,
 			documentHandler, heroSlideHandler, organizationHandler, pageHandler,
 			eventFlyerHandler, mediaHandler, categoryHandler, tagHandler,
-			contactMessageHandler, settingHandler, activityLogHandler, notificationHandler)
+			contactMessageHandler, settingHandler, activityLogHandler, notificationHandler, cdnHandler)
 	}
 }
 
@@ -59,6 +61,15 @@ func setupAuthRoutes(api *gin.RouterGroup, authHandler *handlers.AuthHandler) {
 		auth.POST("/refresh", authHandler.RefreshToken)
 		auth.POST("/forgot-password", authHandler.ForgotPassword)
 		auth.POST("/reset-password", authHandler.ResetPassword)
+	}
+}
+
+// setupPublicRoutes configures public routes (CDN client)
+func setupPublicRoutes(api *gin.RouterGroup, mediaHandler *handlers.MediaHandler) {
+	cdn := api.Group("/cdn")
+	{
+		cdn.GET("/media", mediaHandler.GetAll)
+		cdn.GET("/media/:id", mediaHandler.GetByID)
 	}
 }
 
@@ -83,6 +94,7 @@ func setupProtectedRoutes(
 	settingHandler *handlers.SettingHandler,
 	activityLogHandler *handlers.ActivityLogHandler,
 	notificationHandler *handlers.NotificationHandler,
+	cdnHandler *handlers.CDNHandler,
 ) {
 	admin := api.Group("/admin")
 	admin.Use(middlewares.AuthMiddleware(cfg, authService))
@@ -136,6 +148,9 @@ func setupProtectedRoutes(
 
 		// Notifications
 		setupNotificationRoutes(admin, notificationHandler)
+
+		// CDN Upload
+		setupCDNRoutes(admin, cdnHandler)
 	}
 }
 
@@ -319,5 +334,15 @@ func setupNotificationRoutes(admin *gin.RouterGroup, handler *handlers.Notificat
 		notifications.PATCH("/:id/read", handler.MarkAsRead)
 		notifications.PATCH("/read-all", handler.MarkAllAsRead)
 		notifications.DELETE("/:id", handler.Delete)
+	}
+}
+
+func setupCDNRoutes(admin *gin.RouterGroup, handler *handlers.CDNHandler) {
+	cdn := admin.Group("/cdn")
+	cdn.Use(middlewares.PermissionMiddleware("media.upload"))
+	{
+		cdn.POST("/upload", handler.UploadToCDN)
+		cdn.DELETE("/:tag/:filename", handler.DeleteFromCDN)
+		cdn.GET("/url", handler.GetCDNFileURL)
 	}
 }
