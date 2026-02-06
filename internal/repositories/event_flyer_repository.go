@@ -84,7 +84,7 @@ func (r *eventFlyerRepository) Create(flyer *models.EventFlyer) error {
 }
 
 func (r *eventFlyerRepository) Update(flyer *models.EventFlyer) error {
-	return r.db.Save(flyer).Error
+	return r.db.Session(&gorm.Session{FullSaveAssociations: false}).Save(flyer).Error
 }
 
 func (r *eventFlyerRepository) Delete(id uint) error {

@@ -4,7 +4,7 @@
 app:
   name: "LP Ma'arif NU Admin API"
   env: "production"  # development, staging, production
-  port: 3000
+  port: 8080
   api_version: "v1"
 
 # Database Configuration

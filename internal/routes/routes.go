@@ -262,6 +262,7 @@ func setupEventFlyerRoutes(admin *gin.RouterGroup, handler *handlers.EventFlyerH
 		eventFlyers.GET("", handler.GetAll)
 		eventFlyers.GET("/:id", handler.GetByID)
 		eventFlyers.POST("", middlewares.PermissionMiddleware("events.create"), handler.Create)
+		eventFlyers.PUT("/:id", middlewares.PermissionMiddleware("events.update"), handler.Update)
 		eventFlyers.DELETE("/:id", middlewares.PermissionMiddleware("events.delete"), handler.Delete)
 	}
 }

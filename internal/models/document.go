@@ -51,7 +51,11 @@ type DocumentUpdateRequest struct {
 	Title       *string `json:"title" binding:"omitempty,max=500"`
 	Description *string `json:"description"`
 	CategoryID  *uint   `json:"category_id"`
+	FileName    *string `json:"file_name"`
 	FileURL     *string `json:"file_url"`
+	FileType    *string `json:"file_type"`
+	FileSize    *uint64 `json:"file_size"`
+	MimeType    *string `json:"mime_type"`
 	IsPublic    *bool   `json:"is_public"`
 	Status      *string `json:"status" binding:"omitempty,oneof=active archived"`
 }

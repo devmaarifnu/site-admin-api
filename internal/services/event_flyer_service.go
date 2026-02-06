@@ -10,6 +10,7 @@ type EventFlyerService interface {
 	GetAll(page, limit int, search string) ([]models.EventFlyerResponse, int64, error)
 	GetByID(id uint) (*models.EventFlyerResponse, error)
 	Create(req *models.EventFlyerCreateRequest, uploaderID uint) (*models.EventFlyerResponse, error)
+	Update(id uint, req *models.EventFlyerUpdateRequest) (*models.EventFlyerResponse, error)
 	Delete(id uint) error
 }
 
@@ -74,6 +75,76 @@ func (s *eventFlyerService) Create(req *models.EventFlyerCreateRequest, uploader
 
 	// Reload with creator
 	flyer, err := s.eventFlyerRepo.FindByID(flyer.ID)
+	if err != nil {
+		return nil, err
+	}
+
+	response := s.toResponse(flyer)
+	return &response, nil
+}
+
+func (s *eventFlyerService) Update(id uint, req *models.EventFlyerUpdateRequest) (*models.EventFlyerResponse, error) {
+	flyer, err := s.eventFlyerRepo.FindByID(id)
+	if err != nil {
+		return nil, err
+	}
+
+	// Update fields
+	if req.Title != nil {
+		flyer.Title = *req.Title
+	}
+	if req.Description != nil {
+		desc := *req.Description
+		flyer.Description = &desc
+	}
+	if req.Image != nil {
+		flyer.Image = *req.Image
+	}
+	if req.EventDate != nil {
+		date := *req.EventDate
+		flyer.EventDate = &date
+	}
+	if req.EventLocation != nil {
+		loc := *req.EventLocation
+		flyer.EventLocation = &loc
+	}
+	if req.RegistrationURL != nil {
+		url := *req.RegistrationURL
+		flyer.RegistrationURL = &url
+	}
+	if req.ContactPerson != nil {
+		person := *req.ContactPerson
+		flyer.ContactPerson = &person
+	}
+	if req.ContactPhone != nil {
+		phone := *req.ContactPhone
+		flyer.ContactPhone = &phone
+	}
+	if req.ContactEmail != nil {
+		email := *req.ContactEmail
+		flyer.ContactEmail = &email
+	}
+	if req.OrderNumber != nil {
+		flyer.OrderNumber = *req.OrderNumber
+	}
+	if req.IsActive != nil {
+		flyer.IsActive = *req.IsActive
+	}
+	if req.StartDisplayDate != nil {
+		startDate := *req.StartDisplayDate
+		flyer.StartDisplayDate = &startDate
+	}
+	if req.EndDisplayDate != nil {
+		endDate := *req.EndDisplayDate
+		flyer.EndDisplayDate = &endDate
+	}
+
+	if err := s.eventFlyerRepo.Update(flyer); err != nil {
+		return nil, err
+	}
+
+	// Reload with creator
+	flyer, err = s.eventFlyerRepo.FindByID(flyer.ID)
 	if err != nil {
 		return nil, err
 	}

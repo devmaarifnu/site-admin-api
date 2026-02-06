@@ -149,7 +149,16 @@ func (h *DocumentHandler) ReplaceFile(c *gin.Context) {
 	}
 
 	var req struct {
-		FileURL string `json:"file_url" binding:"required"`
+		Title       *string `json:"title"`
+		Description *string `json:"description"`
+		CategoryID  *uint   `json:"category_id"`
+		FileName    *string `json:"file_name"`
+		FileURL     string  `json:"file_url" binding:"required"`
+		FileType    *string `json:"file_type"`
+		FileSize    *uint64 `json:"file_size"`
+		MimeType    *string `json:"mime_type"`
+		IsPublic    *bool   `json:"is_public"`
+		Status      *string `json:"status"`
 	}
 	if err := c.ShouldBindJSON(&req); err != nil {
 		response.BadRequest(c, "Invalid request", err.Error())
@@ -157,7 +166,16 @@ func (h *DocumentHandler) ReplaceFile(c *gin.Context) {
 	}
 
 	updateReq := &models.DocumentUpdateRequest{
-		FileURL: &req.FileURL,
+		Title:       req.Title,
+		Description: req.Description,
+		CategoryID:  req.CategoryID,
+		FileName:    req.FileName,
+		FileURL:     &req.FileURL,
+		FileType:    req.FileType,
+		FileSize:    req.FileSize,
+		MimeType:    req.MimeType,
+		IsPublic:    req.IsPublic,
+		Status:      req.Status,
 	}
 
 	document, err := h.documentService.Update(uint(id), updateReq)

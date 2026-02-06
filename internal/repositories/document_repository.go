@@ -67,7 +67,7 @@ func (r *documentRepository) Create(doc *models.Document) error {
 }
 
 func (r *documentRepository) Update(doc *models.Document) error {
-	return r.db.Save(doc).Error
+	return r.db.Session(&gorm.Session{FullSaveAssociations: false}).Save(doc).Error
 }
 
 func (r *documentRepository) Delete(id uint) error {

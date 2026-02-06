@@ -104,6 +104,21 @@ func (s *documentService) Update(id uint, req *models.DocumentUpdateRequest) (*m
 	if req.CategoryID != nil {
 		doc.CategoryID = req.CategoryID
 	}
+	if req.FileName != nil {
+		doc.FileName = *req.FileName
+	}
+	if req.FileURL != nil {
+		doc.FilePath = *req.FileURL
+	}
+	if req.FileType != nil {
+		doc.FileType = *req.FileType
+	}
+	if req.FileSize != nil {
+		doc.FileSize = *req.FileSize
+	}
+	if req.MimeType != nil {
+		doc.MimeType = req.MimeType
+	}
 	if req.IsPublic != nil {
 		doc.IsPublic = *req.IsPublic
 	}

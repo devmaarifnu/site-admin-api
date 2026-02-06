@@ -68,6 +68,28 @@ func (h *EventFlyerHandler) Create(c *gin.Context) {
 	response.Created(c, "Event flyer created successfully", flyer)
 }
 
+func (h *EventFlyerHandler) Update(c *gin.Context) {
+	id, err := strconv.ParseUint(c.Param("id"), 10, 32)
+	if err != nil {
+		response.BadRequest(c, "Invalid ID", err.Error())
+		return
+	}
+
+	var req models.EventFlyerUpdateRequest
+	if err := c.ShouldBindJSON(&req); err != nil {
+		response.BadRequest(c, "Invalid request", err.Error())
+		return
+	}
+
+	flyer, err := h.eventFlyerService.Update(uint(id), &req)
+	if err != nil {
+		response.InternalServerError(c, err.Error())
+		return
+	}
+
+	response.Success(c, "Event flyer updated successfully", flyer)
+}
+
 func (h *EventFlyerHandler) Delete(c *gin.Context) {
 	id, err := strconv.ParseUint(c.Param("id"), 10, 32)
 	if err != nil {
